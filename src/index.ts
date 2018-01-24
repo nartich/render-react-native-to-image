@@ -39,62 +39,68 @@ const fail = (msg) => ({ message: () => msg, pass: false })
 
 export { addFontFallback, loadFont } from "./font-loader"
 
-expect.extend({
-    toMatchSVGSnapshot(root: Component, width, height) {
-        if (!root) { return fail("A falsy Component was passed to toMatchSVGSnapshot") }
-        if (!root.props) { return fail("A Component without props was passed to toMatchSVGSnapshot") }
-        if (!root.type) { return fail("A Component without a type was passed to toMatchSVGSnapshot") }
+export const renderToSVGString = (root: Component, width, height) => {
+    const settings: Settings = { width, height }
+    const rootNode = componentTreeToNodeTree(root, settings)
+    if (!rootNode) { return }
 
-        // getState isn't in the d.ts for Jest, this is ok though.
-        const state = (expect as any).getState()
-        const currentTest = state.testPath as string
-        const currentTestName = state.currentTestName as string
+    // This will mutate the node tree, we cannot trust that the nodes  in the original tree will
+    // still exist.
+    rootNode.calculateLayout(settings.width, settings.height, yoga.DIRECTION_LTR)
 
-        const testFile = currentTestName.replace(/\s+/g, "-").replace(/\//g, "-").toLowerCase()
+    // Generate a tree of components with the layout baked into it, them clean up yog memory
+    const renderedComponentRoot = renderedComponentTree(root, rootNode)
+    rootNode.freeRecursive()
 
-        //  Figure out the paths
-        const snapshotsDir = path.join(currentTest, "..", "__snapshots__")
-        const expectedSnapshot = path.join(snapshotsDir, path.basename(currentTest) + "-" + testFile + ".svg")
+    return treeToSVG(renderedComponentRoot, settings)
+}
 
-        // Make our folder if it's needed
-        if (!fs.existsSync(snapshotsDir)) { fs.mkdirSync(snapshotsDir) }
+if (typeof expect !== "undefined") {
+    expect.extend({
+        toMatchSVGSnapshot(root: Component, width, height) {
+            if (!root) { return fail("A falsy Component was passed to toMatchSVGSnapshot") }
+            if (!root.props) { return fail("A Component without props was passed to toMatchSVGSnapshot") }
+            if (!root.type) { return fail("A Component without a type was passed to toMatchSVGSnapshot") }
 
-        // We will need to do something smarter in the future, these snapshots need to be 1 file per test
-        // whereas jest-snapshots can be multi-test per file.
+            // getState isn't in the d.ts for Jest, this is ok though.
+            const state = (expect as any).getState()
+            const currentTest = state.testPath as string
+            const currentTestName = state.currentTestName as string
 
-        const settings: Settings = { width, height }
-        const rootNode = componentTreeToNodeTree(root, settings)
-        if (!rootNode) { return }
+            const testFile = currentTestName.replace(/\s+/g, "-").replace(/\//g, "-").toLowerCase()
 
-        // This will mutate the node tree, we cannot trust that the nodes  in the original tree will
-        // still exist.
-        rootNode.calculateLayout(settings.width, settings.height, yoga.DIRECTION_LTR)
+            //  Figure out the paths
+            const snapshotsDir = path.join(currentTest, "..", "__snapshots__")
+            const expectedSnapshot = path.join(snapshotsDir, path.basename(currentTest) + "-" + testFile + ".svg")
 
-        // Generate a tree of components with the layout baked into it, them clean up yog memory
-        const renderedComponentRoot = renderedComponentTree(root, rootNode)
-        rootNode.freeRecursive()
+            // Make our folder if it's needed
+            if (!fs.existsSync(snapshotsDir)) { fs.mkdirSync(snapshotsDir) }
 
-        const svgText = treeToSVG(renderedComponentRoot, settings)
+            // We will need to do something smarter in the future, these snapshots need to be 1 file per test
+            // whereas jest-snapshots can be multi-test per file.
 
-        // TODO: Determine if Jest is in `-u`?
-        // can be done via the private API
-        // state.snapshotState._updateSnapshot === "all"
+            const svgText = renderToSVGString(root, width, height)
 
-        // Are we in write mode?
-        if (!fs.existsSync(expectedSnapshot)) {
-            fs.writeFileSync(expectedSnapshot, svgText)
-            return {
-                message: () => "Created a new Snapshot for you",
-                pass: false
-            }
-        } else {
-            const contents = fs.readFileSync(expectedSnapshot, "utf8")
-            if (contents !== svgText) {
+            // TODO: Determine if Jest is in `-u`?
+            // can be done via the private API
+            // state.snapshotState._updateSnapshot === "all"
+
+            // Are we in write mode?
+            if (!fs.existsSync(expectedSnapshot)) {
                 fs.writeFileSync(expectedSnapshot, svgText)
-                return { message: () => `SVG Snapshot failed: we have updated it for you`, pass: false }
+                return {
+                    message: () => "Created a new Snapshot for you",
+                    pass: false
+                }
             } else {
-                return { message: () => "All good", pass: true }
+                const contents = fs.readFileSync(expectedSnapshot, "utf8")
+                if (contents !== svgText) {
+                    fs.writeFileSync(expectedSnapshot, svgText)
+                    return { message: () => `SVG Snapshot failed: we have updated it for you`, pass: false }
+                } else {
+                    return { message: () => "All good", pass: true }
+                }
             }
         }
-    }
-} as any)
+    } as any)
+}
