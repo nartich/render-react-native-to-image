@@ -7,11 +7,31 @@ export const textLines = Symbol("textLines")
 
 const isNotEmpty = prop => typeof prop !== "undefined" && prop !== null
 
-const componentToNode = (component: Component, settings: Settings): yoga.NodeInstance => {
+const getImageSize = (uri) => {
+  const path = require("path")
+  const getSize = require("image-size")
+  const state = (expect as any).getState()
+  const currentTest = state.testPath as string
+
+  const fullPath = path.join(currentTest, uri)
+  console.log("Want to find the dimensions for this thing", fullPath)
+  return getSize(fullPath)
+}
+
+const componentToNode = (component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
   // Do we need to pass in the parent node too?
   const node = yoga.Node.create()
-  const hasStyle = component.props && component.props.style
-  const style = hasStyle ? styleFromComponent(component) : {}
+  let hasStyle = parentStyleOverrides || (component.props && component.props.style)
+  const style = {...parentStyleOverrides, ...(hasStyle ? styleFromComponent(component) : {})}
+
+  if (component.type === "Image" && component.props.source && component.props.source.testUri) {
+    if (style.width == null || style.height == null) {
+      const {width, height} = getImageSize(component.props.source.testUri)
+      if (style.width == null) style.width = width
+      if (style.height == null) style.height = height
+      hasStyle = true
+    }
+  }
 
   if (hasStyle) {
     // http://facebook.github.io/react-native/releases/0.44/docs/layout-props.html

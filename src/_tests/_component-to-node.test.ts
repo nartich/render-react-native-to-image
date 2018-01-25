@@ -20,7 +20,7 @@ describe("componentToNode", () => {
       height: 768
     }
 
-    const node = componentToNode(component, settings)
+    const node = componentToNode(component, settings, null)
     node.calculateLayout(yoga.UNDEFINED, yoga.UNDEFINED, yoga.DIRECTION_INHERIT)
 
     expect(node.getComputedWidth()).toEqual(300)

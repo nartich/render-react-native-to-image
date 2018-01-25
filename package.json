@@ -32,7 +32,6 @@
     "build": "tsc && cp src/external-api.d.ts build",
     "watch": "tsc --watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
-    "precommit": "lint-staged",
     "prepush": "yarn build && yarn jest"
   },
   "lint-staged": {
@@ -63,6 +62,7 @@
   "dependencies": {
     "font-manager": "^0.2.2",
     "fontkit": "^1.7.7",
+    "image-size": "^0.6.2",
     "linebreak": "^0.3.0",
     "nbind": "^0.3.12",
     "yoga-layout": "^1.5.0"

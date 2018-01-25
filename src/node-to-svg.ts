@@ -7,26 +7,21 @@ import { RenderedComponent, Settings } from "./index"
 import wsp from "./whitespace"
 
 export const getOpacity = node => {
-  const {opacity = 1} = styleFromComponent(node);
+  const {opacity = 1} = styleFromComponent(node)
   return opacity
-};
+}
 
 const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
   RCTScrollView: (node) => renderers.View(node),
   Image: (node) => {
-    const style = styleFromComponent(node);
-    if (node.props.source && node.props.source.uri) {
+    const style = styleFromComponent(node)
+    if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
+      console.log(style)
+      const uri = node.props.source.testUri || node.props.source.uri
       return [svg("image", node.layout, {
-        "xlink:href": node.props.source.uri,
-        "preserveAspectRatio": style.resizeMode === 'cover' ? "xMidYMid slice" : "",
-        opacity: getOpacity(node)
-      })]
-    } else if (node.props.source && node.props.source.testUri) {
-      console.log('Want to find the dimensions for this thing', process.cwd(), node.props.source.testUri)
-      return [svg("image", node.layout, {
-        "xlink:href": node.props.source.testUri,
-        // "preserveAspectRatio": "xMidYMid slice",
-        opacity: getOpacity(node)
+        "xlink:href": uri,
+        "preserveAspectRatio": node.props.resizeMode === "cover" ? "xMidYMid slice" : "",
+        "opacity": getOpacity(node)
       })]
     } else {
       return renderers.View(node)
