@@ -43,6 +43,10 @@ const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
         attributes.fill = style.backgroundColor
         attributes["fill-opacity"] = 1
       }
+      if (style.borderRadius) {
+        attributes.rx = style.borderRadius
+        attributes.ry = style.borderRadius
+      }
       const nodes = [svg("rect", node.layout, attributes)]
 
       // TODO: borderWidth, also border radius
