@@ -36,6 +36,7 @@ export interface Settings {
 const fail = (msg) => ({ message: () => msg, pass: false })
 
 export { addFontFallback, loadFont } from "./font-loader"
+
 import {fontState} from './font-loader'
 
 // if (typeof expect !== "undefined") {
@@ -62,7 +63,7 @@ expect.extend({
             // We will need to do something smarter in the future, these snapshots need to be 1 file per test
             // whereas jest-snapshots can be multi-test per file.
 
-            const svgText = renderToSVGString(root, fontState, width, height)
+            const svgText = renderToSVGString(currentTest, root, fontState, width, height)
 
             // TODO: Determine if Jest is in `-u`?
             // can be done via the private API

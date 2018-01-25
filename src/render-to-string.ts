@@ -7,9 +7,9 @@ import {FontState} from './font-utils'
 
 import {Component, Settings} from './'
 
-const renderToSVGString = (root: Component, fontState: FontState, width: number, height: number) => {
+const renderToSVGString = (basePath: string, root: Component, fontState: FontState, width: number, height: number) => {
     const settings: Settings = { width, height }
-    const rootNode = componentTreeToNodeTree(fontState, root, settings)
+    const rootNode = componentTreeToNodeTree(basePath, fontState, root, settings)
     if (!rootNode) { return }
 
     // This will mutate the node tree, we cannot trust that the nodes  in the original tree will

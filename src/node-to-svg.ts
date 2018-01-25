@@ -12,6 +12,19 @@ export const getOpacity = node => {
   return opacity
 }
 
+// I did this to try to get finder's quick-look preview to load images. doesn't seem to do it.
+// const getImageUri = (source) => {
+//   if (source.uri) {
+//     return source.uri
+//   } else if (source.testUri) {
+//     const path = require("path")
+//     const state = (expect as any).getState()
+//     const currentTest = state.testPath as string
+//     const fullPath = path.join(currentTest, source.testUri)
+//     return fullPath
+//   }
+// }
+
 const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent) => string[]} = {
   RCTScrollView: (fontState, node) => renderers.View(fontState, node),
   Image: (fontState, node) => {

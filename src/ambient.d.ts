@@ -252,6 +252,7 @@ declare module "yoga-layout" {
     setFlexShrink(ordinal: number)
     setFlexBasis(ordinal: number)
     setFlexDirection(direct: FlexDirection)
+    setFlexWrap(wrap: Wrap)
     setJustifyContent(justify: Justify)
     setAlignItems(alignment: number)
     setAlignSelf(alignment: number)

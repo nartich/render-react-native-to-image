@@ -63,6 +63,8 @@ const addFont = (fontState: FontState, font, style) => {
   fontState.fonts[key] = font
 }
 
+export const init = () => ({fonts: {}, fallbacks: {}});
+
 export const loadFont = (
   fontState: FontState,
   fontFile: Buffer,

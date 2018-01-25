@@ -8,18 +8,16 @@ export const textLines = Symbol("textLines")
 
 const isNotEmpty = prop => typeof prop !== "undefined" && prop !== null
 
-const getImageSize = (uri) => {
+const getImageSize = (basePath: string, uri: string) => {
   const path = require("path")
   const getSize = require("image-size")
-  const state = (expect as any).getState()
-  const currentTest = state.testPath as string
 
-  const fullPath = path.join(currentTest, uri)
+  const fullPath = path.join(basePath, uri)
   console.log("Want to find the dimensions for this thing", fullPath)
   return getSize(fullPath)
 }
 
-const componentToNode = (fontState: FontState, component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
+const componentToNode = (basePath: string, fontState: FontState, component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
   // Do we need to pass in the parent node too?
   const node = yoga.Node.create()
   let hasStyle = parentStyleOverrides || (component.props && component.props.style)
@@ -27,7 +25,7 @@ const componentToNode = (fontState: FontState, component: Component, settings: S
 
   if (component.type === "Image" && component.props.source && component.props.source.testUri) {
     if (style.width == null || style.height == null) {
-      const {width, height} = getImageSize(component.props.source.testUri)
+      const {width, height} = getImageSize(basePath, component.props.source.testUri)
       if (style.width == null) style.width = width
       if (style.height == null) style.height = height
       hasStyle = true
@@ -72,6 +70,21 @@ const componentToNode = (fontState: FontState, component: Component, settings: S
     if (isNotEmpty(style.flexGrow)) { node.setFlexGrow(style.flexGrow) }
     if (isNotEmpty(style.flexShrink)) { node.setFlexShrink(style.flexShrink) }
     if (isNotEmpty(style.flexBasis)) { node.setFlexBasis(style.flexBasis) }
+    if (isNotEmpty(style.flexWrap)) {
+      switch (style.flexWrap) {
+        case 'wrap':
+          node.setFlexWrap(yoga.WRAP_WRAP)
+          break
+        case 'nowrap':
+          node.setFlexWrap(yoga.WRAP_NO_WRAP)
+          break
+        case 'wrap-reverse':
+          node.setFlexWrap(yoga.WRAP_WRAP_REVERSE)
+          break
+        default:
+          throw new Error('invalid flex wrap value: ' + style.flexWrap)
+      }
+    }
 
     if (style.position === "absolute") {
       node.setPositionType(yoga.POSITION_TYPE_ABSOLUTE)

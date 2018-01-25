@@ -40,7 +40,7 @@ it("handles some simple JSX", () => {
     height: 400,
   }
 
-  const rootNode = componentTreeToNodeTree(fontState, component, settings)
+  const rootNode = componentTreeToNodeTree("", fontState, component, settings)
   const rendered = renderedComponentTree(component, rootNode)
   const results = treeToSVG(fontState, rendered, settings)
   expect(results).toMatchSnapshot()
