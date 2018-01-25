@@ -3,12 +3,13 @@ import componentTreeToNodeTree from "./component-tree-to-nodes"
 import renderedComponentTree from "./reapply-layouts-to-components"
 import treeToSVG from "./tree-to-svg"
 import * as yoga from "yoga-layout"
+import {FontState} from './font-utils'
 
 import {Component, Settings} from './'
 
-const renderToSVGString = (root: Component, width, height) => {
+const renderToSVGString = (root: Component, fontState: FontState, width: number, height: number) => {
     const settings: Settings = { width, height }
-    const rootNode = componentTreeToNodeTree(root, settings)
+    const rootNode = componentTreeToNodeTree(fontState, root, settings)
     if (!rootNode) { return }
 
     // This will mutate the node tree, we cannot trust that the nodes  in the original tree will
@@ -19,7 +20,7 @@ const renderToSVGString = (root: Component, width, height) => {
     const renderedComponentRoot = renderedComponentTree(root, rootNode)
     rootNode.freeRecursive()
 
-    return treeToSVG(renderedComponentRoot, settings)
+    return treeToSVG(fontState, renderedComponentRoot, settings)
 }
 
 export default renderToSVGString;

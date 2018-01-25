@@ -1,6 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import treeToSVG from "../tree-to-svg"
+import {fontState} from '../font-loader'
 
 describe("treeToSVG", () => {
   it("wraps whatever text you pass into it with an SVG schema", () => {
@@ -24,7 +25,7 @@ describe("treeToSVG", () => {
       height: 768,
     }
 
-    const results = treeToSVG(renderedComponent, settings)
+    const results = treeToSVG(fontState, renderedComponent, settings)
     expect(results).toMatchSnapshot()
   })
 })

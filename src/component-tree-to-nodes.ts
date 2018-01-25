@@ -2,13 +2,14 @@ import * as yoga from "yoga-layout"
 
 import componentToNode from "./component-to-node"
 import { Component, Settings } from "./index"
+import { FontState } from './font-utils'
 
-const treeToNodes = (root: Component, settings: Settings) => recurseTree(root, settings, null)
+const treeToNodes = (fontState: FontState, root: Component, settings: Settings) => recurseTree(fontState, root, settings, null)
 
 export default treeToNodes
 
-export const recurseTree = (component: Component, settings: Settings, parentStyleOverrides: null | any) => {
-  const node = componentToNode(component, settings, parentStyleOverrides)
+export const recurseTree = (fontState: FontState, component: Component, settings: Settings, parentStyleOverrides: null | any) => {
+  const node = componentToNode(fontState, component, settings, parentStyleOverrides)
 
   // Don't go into Text nodes
   if (component.type !== "Text" && component.children) {
@@ -18,7 +19,7 @@ export const recurseTree = (component: Component, settings: Settings, parentStyl
       if (typeof childComponent === "string") {
         throw new Error("Unexpected string child in non-Text node")
       }
-      const childNode = recurseTree(childComponent, settings, styleOverrides)
+      const childNode = recurseTree(fontState, childComponent, settings, styleOverrides)
       node.insertChild(childNode, index)
     }
   }

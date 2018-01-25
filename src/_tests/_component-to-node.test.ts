@@ -1,6 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import componentToNode, { styleFromComponent } from "../component-to-node"
+import {fontState} from '../font-loader'
 
 describe("componentToNode", () => {
   it("generates the width for a simple component", () => {
@@ -20,7 +21,7 @@ describe("componentToNode", () => {
       height: 768
     }
 
-    const node = componentToNode(component, settings, null)
+    const node = componentToNode(fontState, component, settings, null)
     node.calculateLayout(yoga.UNDEFINED, yoga.UNDEFINED, yoga.DIRECTION_INHERIT)
 
     expect(node.getComputedWidth()).toEqual(300)

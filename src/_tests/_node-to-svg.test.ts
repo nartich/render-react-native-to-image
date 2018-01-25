@@ -1,6 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import nodeToSVG from "../node-to-svg"
+import {fontState} from '../font-loader'
 
 const component = (name) => ({
   type: name,
@@ -26,7 +27,7 @@ describe("nodeToSVG", () => {
         height: 768,
       }
 
-      const results = nodeToSVG(0, rootNode, settings)
+      const results = nodeToSVG(fontState, 0, rootNode, settings)
       expect(results).toMatchSnapshot()
     })
 })

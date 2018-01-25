@@ -2,6 +2,7 @@ import {ViewStyle} from "react-native"
 import * as yoga from "yoga-layout"
 import { styleFromComponent, textLines } from "./component-to-node"
 import textToSvg from "./text-to-svg"
+import { FontState } from './font-utils'
 
 import { RenderedComponent, Settings } from "./index"
 import wsp from "./whitespace"
@@ -11,9 +12,9 @@ export const getOpacity = node => {
   return opacity
 }
 
-const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
-  RCTScrollView: (node) => renderers.View(node),
-  Image: (node) => {
+const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent) => string[]} = {
+  RCTScrollView: (fontState, node) => renderers.View(fontState, node),
+  Image: (fontState, node) => {
     const style = styleFromComponent(node)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       console.log(style)
@@ -24,11 +25,11 @@ const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
         "opacity": getOpacity(node)
       })]
     } else {
-      return renderers.View(node)
+      return renderers.View(fontState, node)
     }
   },
-  Text: (node) => [textToSvg(node.layout, styleFromComponent(node), node[textLines])],
-  View: (node) => {
+  Text: (fontState, node) => [textToSvg(fontState, node.layout, styleFromComponent(node), node[textLines])],
+  View: (fontState, node) => {
       const attributes: any = {
         type: node.type,
         fill: "transparent",
@@ -72,17 +73,17 @@ const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
   }
 }
 
-const svgForNode = (node) => {
+const svgForNode = (fontState: FontState, node) => {
   if (!renderers[node.type]) {
     console.log("unexpected node type", node.type)
-    return renderers.View(node)
+    return renderers.View(fontState, node)
   } else {
-    return renderers[node.type](node)
+    return renderers[node.type](fontState, node)
   }
 }
 
-const nodeToSVG = (indent: number, node: RenderedComponent, settings: Settings) => {
-  const nodes: string[] = svgForNode(node)
+const nodeToSVG = (fontState: FontState, indent: number, node: RenderedComponent, settings: Settings) => {
+  const nodes: string[] = svgForNode(fontState, node)
   return nodes.map(text => "\n" + wsp(indent) + text).join("")
 }
 

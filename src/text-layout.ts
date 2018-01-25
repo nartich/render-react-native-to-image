@@ -1,15 +1,15 @@
 import * as LineBreaker from "linebreak"
 import { AttributedStyle, TextWithAttributedStyle } from "./extract-text"
-import { fontForStyle } from "./font-loader"
+import { fontForStyle, FontState } from "./font-utils"
 
-export const lineWidth = ({ text, attributedStyles }: TextWithAttributedStyle): number =>
+export const lineWidth = (fontState: FontState, { text, attributedStyles }: TextWithAttributedStyle): number =>
   attributedStyles.reduce((x, { start, end, style }, i) => {
     let body = text.slice(start, end)
     // Trim trailling whitespace
     if (i === attributedStyles.length - 1) {
       body = body.replace(/\s+$/, "")
     }
-    const font = fontForStyle(style)
+    const font = fontForStyle(fontState, style)
     return x + font.layout(body).advanceWidth / font.unitsPerEm * style.fontSize
   }, 0)
 
@@ -25,13 +25,13 @@ export const lineFontSize = (line: TextWithAttributedStyle): number =>
     ...line.attributedStyles.map(({ style }) => style.fontSize)
   )
 
-const baselineForAttributedStyle = ({ style }: AttributedStyle): number => {
-  const font = fontForStyle(style)
+const baselineForAttributedStyle = (fontState: FontState, { style }: AttributedStyle): number => {
+  const font = fontForStyle(fontState, style)
   return font.ascent / font.unitsPerEm * style.fontSize
 }
 
-export const lineBaseline = (line: TextWithAttributedStyle): number =>
-  Math.max(0, ...line.attributedStyles.map(baselineForAttributedStyle))
+export const lineBaseline = (fontState: FontState, line: TextWithAttributedStyle): number =>
+  Math.max(0, ...line.attributedStyles.map(x => baselineForAttributedStyle(fontState, x)))
 
 const textSlice = (
   textStyle: TextWithAttributedStyle,
@@ -49,6 +49,7 @@ const textSlice = (
 })
 
 export const breakLines = (
+  fontState: FontState,
   textStyle: TextWithAttributedStyle,
   width: number
 ): TextWithAttributedStyle[] => {
@@ -65,7 +66,7 @@ export const breakLines = (
   while (bk != null) {
     const { position, required } = bk
     const testLine = textSlice(textStyle, lineStart, position)
-    if (lastLine === null || (!shouldBreak && lineWidth(testLine) <= width)) {
+    if (lastLine === null || (!shouldBreak && lineWidth(fontState, testLine) <= width)) {
       lastLine = testLine
     } else {
       lines.push(lastLine)
@@ -84,7 +85,7 @@ export const breakLines = (
   return lines
 }
 
-export const measureLines = lines => ({
-  width: Math.max(0, ...lines.map(lineWidth)),
+export const measureLines = (fontState, lines) => ({
+  width: Math.max(0, ...lines.map(x => lineWidth(fontState, x))),
   height: lines.reduce((a, b) => a + lineHeight(b), 0),
 })

@@ -2,6 +2,7 @@ import * as yoga from "yoga-layout"
 import extractText from "./extract-text"
 import { Component, Settings } from "./index"
 import { breakLines, measureLines } from "./text-layout"
+import { FontState } from './font-utils'
 
 export const textLines = Symbol("textLines")
 
@@ -18,7 +19,7 @@ const getImageSize = (uri) => {
   return getSize(fullPath)
 }
 
-const componentToNode = (component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
+const componentToNode = (fontState: FontState, component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
   // Do we need to pass in the parent node too?
   const node = yoga.Node.create()
   let hasStyle = parentStyleOverrides || (component.props && component.props.style)
@@ -122,9 +123,9 @@ const componentToNode = (component: Component, settings: Settings, parentStyleOv
     const styledText = extractText(component)
     component[textLines] = null
     node.setMeasureFunc(width => {
-      const lines = breakLines(styledText, width)
+      const lines = breakLines(fontState, styledText, width)
       component[textLines] = lines
-      return measureLines(lines)
+      return measureLines(fontState, lines)
     })
   }
 

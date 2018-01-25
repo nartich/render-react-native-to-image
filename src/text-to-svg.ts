@@ -1,10 +1,11 @@
 import { TextWithAttributedStyle } from "./extract-text"
-import { fontWithFallbacks } from "./font-loader"
+import { fontWithFallbacks } from "./font-utils"
 import { $ } from "./svg-util"
 import { lineBaseline, lineFontSize, lineHeight } from "./text-layout"
+import { FontState } from './font-utils'
 
-const textStyles = style => ({
-  "font-family": fontWithFallbacks(style.fontFamily),
+const textStyles = (fontState: FontState, style) => ({
+  "font-family": fontWithFallbacks(fontState, style.fontFamily),
   "font-weight": style.fontWeight,
   "font-style": style.fontStyle,
   "font-size": style.fontSize,
@@ -22,20 +23,20 @@ const textAnchors = {
   right: "end",
 }
 
-export default ({left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): string => {
+export default (fontState: FontState, {left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): string => {
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   const originX = width * textAligns[textAlign]
 
   const { textLines } = lines.reduce((accum, line) => {
     const { text, attributedStyles } = line
-    const originY = accum.y + lineBaseline(line) + (lineHeight(line) - lineFontSize(line)) / 2
+    const originY = accum.y + lineBaseline(fontState, line) + (lineHeight(line) - lineFontSize(line)) / 2
 
     const tspans = attributedStyles.map(({ start, end, style }, i) => (
       $("tspan", {
         x: i === 0 ? left + originX : undefined,
         y: i === 0 ? originY : undefined,
         fill: style.color,
-        ...textStyles(style),
+        ...textStyles(fontState, style),
       }, i === attributedStyles.length - 1
         ? text.slice(start, end).replace(/\s*$/, "")
         : text.slice(start, end)

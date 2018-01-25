@@ -4,6 +4,7 @@ jest.mock("../node-to-svg.ts", () => ({ default: mockNodeToSVG }))
 import * as yoga from "yoga-layout"
 import { RenderedComponent } from "../index"
 import { recurseTree, svgWrapper } from "../tree-to-svg"
+import {fontState} from '../font-loader'
 
 describe("svgWrapper", () => {
     it("wraps whatever text you pass into it with an SVG schema", () => {
@@ -45,7 +46,7 @@ describe("recurseTree", () => {
         width: 1024,
         height: 768,
       }
-      const results = recurseTree(0, root, settings)
+      const results = recurseTree(fontState, 0, root, settings)
       expect(mockNodeToSVG.mock.calls.length).toEqual(1)
     })
 
@@ -59,7 +60,7 @@ describe("recurseTree", () => {
         styleMap: new WeakMap()
       }
 
-      const results = recurseTree(0, root, settings)
+      const results = recurseTree(fontState, 0, root, settings)
       expect(mockNodeToSVG.mock.calls.length).toEqual(3)
     })
 })
