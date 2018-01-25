@@ -1,12 +1,13 @@
 import * as yoga from "yoga-layout"
 import { RenderedComponent, Settings } from "./index"
 import nodeToSVG from "./node-to-svg"
+import {styleFromComponent} from "./component-to-node"
 import wsp from "./whitespace"
 
 export const recurseTree =
-  (indent: number, root: RenderedComponent, parent: null | RenderedComponent, settings: Settings) => {
+  (indent: number, root: RenderedComponent, settings: Settings) => {
 
-    const nodeString = nodeToSVG(indent, root, parent, settings)
+    const nodeString = nodeToSVG(indent, root, settings)
 
     const childrenCount = root.children.length
     if (!childrenCount) { return nodeString }
@@ -18,7 +19,7 @@ export const recurseTree =
         const child = root.children[index]
         // Don't go into Text nodes
         if (!(typeof child === "string")) {
-          childGroups += recurseTree(indent + 1, child, root, settings)
+          childGroups += recurseTree(indent + 1, child, settings)
         }
       }
 
@@ -33,14 +34,19 @@ ${bodyText}
 </svg>
 `
 
+const getOpacity = node => {
+  const {opacity = 1} = styleFromComponent(node);
+  return opacity
+};
+
 export const groupWrap = (node: RenderedComponent, indent: number, recurse: () => string) => `
 
-${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})'>${recurse()}
+${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})' opacity='${getOpacity(node)}'>${recurse()}
 ${wsp(indent)}</g>
 `
 
 const treeToSVG = (root: RenderedComponent, settings: Settings) => {
-  return svgWrapper(recurseTree(0, root, null, settings), settings)
+  return svgWrapper(recurseTree(0, root, settings), settings)
 }
 
 export default treeToSVG

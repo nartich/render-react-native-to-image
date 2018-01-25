@@ -6,17 +6,17 @@ import textToSvg from "./text-to-svg"
 import { RenderedComponent, Settings } from "./index"
 import wsp from "./whitespace"
 
-const renderers: {[key: string]: (node: RenderedComponent, parent: null | RenderedComponent) => string[]} = {
-  RCTScrollView: (node, parent) => renderers.View(node, parent),
-  Image: (node, parent) => {
+const renderers: {[key: string]: (node: RenderedComponent) => string[]} = {
+  RCTScrollView: (node) => renderers.View(node),
+  Image: (node) => {
     if (node.props.source && node.props.source.uri) {
       return [svg("image", node.layout, {"xlink:href": node.props.source.uri, "preserveAspectRatio": "xMidYMid slice"})]
     } else {
-      return renderers.View(node, parent)
+      return renderers.View(node)
     }
   },
-  Text: (node, parent) => [textToSvg(node.layout, styleFromComponent(node), parent ? styleFromComponent(parent) : {}, node[textLines])],
-  View: (node, parent) => {
+  Text: (node) => [textToSvg(node.layout, styleFromComponent(node), node[textLines])],
+  View: (node) => {
       const attributes: any = {
         type: node.type,
         fill: "transparent",
@@ -32,8 +32,8 @@ const renderers: {[key: string]: (node: RenderedComponent, parent: null | Render
       }
       const nodes = [svg("rect", node.layout, attributes)]
 
-      const {left, right, top, bottom, width, height} = node.layout
-      // DANGER DANGER bottom is WRONG
+      // TODO: borderWidth, also border radius
+      const {left, top, width, height} = node.layout
       if (style.borderBottomWidth) {
         const w = style.borderBottomWidth
         nodes.push(svg("rect", {left, top: top + height - w / 2, height: w, width}, {fill: style.borderBottomColor}))
@@ -55,17 +55,17 @@ const renderers: {[key: string]: (node: RenderedComponent, parent: null | Render
   }
 }
 
-const svgForNode = (node, parent) => {
+const svgForNode = (node) => {
   if (!renderers[node.type]) {
     console.log("unexpected node type", node.type)
-    return renderers.View(node, parent)
+    return renderers.View(node)
   } else {
-    return renderers[node.type](node, parent)
+    return renderers[node.type](node)
   }
 }
 
-const nodeToSVG = (indent: number, node: RenderedComponent, parent: null | RenderedComponent, settings: Settings) => {
-  const nodes: string[] = svgForNode(node, parent)
+const nodeToSVG = (indent: number, node: RenderedComponent, settings: Settings) => {
+  const nodes: string[] = svgForNode(node)
   return nodes.map(text => "\n" + wsp(indent) + text).join("")
 }
 

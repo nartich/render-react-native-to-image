@@ -22,7 +22,7 @@ const textAnchors = {
   right: "end",
 }
 
-export default ({left, top, width, height}, style: any, parentStyle: any, lines: TextWithAttributedStyle[]): string => {
+export default ({left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): string => {
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   const originX = width * textAligns[textAlign]
 
