@@ -4,9 +4,9 @@ import nodeToSVG from "./node-to-svg"
 import wsp from "./whitespace"
 
 export const recurseTree =
-  (indent: number, root: RenderedComponent, settings: Settings) => {
+  (indent: number, root: RenderedComponent, parent: null | RenderedComponent, settings: Settings) => {
 
-    const nodeString = nodeToSVG(indent, root, settings)
+    const nodeString = nodeToSVG(indent, root, parent, settings)
 
     const childrenCount = root.children.length
     if (!childrenCount) { return nodeString }
@@ -18,7 +18,7 @@ export const recurseTree =
         const child = root.children[index]
         // Don't go into Text nodes
         if (!(typeof child === "string")) {
-          childGroups += recurseTree(indent + 1, child, settings)
+          childGroups += recurseTree(indent + 1, child, root, settings)
         }
       }
 
@@ -28,7 +28,7 @@ export const recurseTree =
 
 export const svgWrapper = (bodyText: string, settings: Settings) =>
   `<?xml version="1.0" encoding="UTF-8" ?>
-<svg width="${settings.width}" height="${settings.height}" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg width="${settings.width}" height="${settings.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 ${bodyText}
 </svg>
 `
@@ -40,7 +40,7 @@ ${wsp(indent)}</g>
 `
 
 const treeToSVG = (root: RenderedComponent, settings: Settings) => {
-  return svgWrapper(recurseTree(0, root, settings), settings)
+  return svgWrapper(recurseTree(0, root, null, settings), settings)
 }
 
 export default treeToSVG

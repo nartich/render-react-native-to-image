@@ -112,7 +112,7 @@ const componentToNode = (component: Component, settings: Settings): yoga.NodeIns
 }
 
 export const styleFromComponent = (component: Component) => {
-    let style = component.props.style
+    let style = component.props.style || {}
 
     if (Array.isArray(style)) {
       // The Stylesheet object allows some serious nesting of styles

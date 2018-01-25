@@ -12,15 +12,16 @@ export const recurseTree = (component: Component, node: yoga.NodeInstance) => {
 
   const newChildren = [] as RenderedComponent[]
 
-  if (component.children) {
+  // Don't go into Text nodes
+  if (component.children && component.type !== "Text") {
     for (let index = 0; index < component.children.length; index++) {
       const childComponent = component.children[index]
       const childNode = node.getChild(index)
-      // Don't go into Text nodes
-      if (component.type !== "Text" && typeof childComponent !== "string") {
-        const renderedChildComponent = recurseTree(childComponent, childNode)
-        newChildren.push(renderedChildComponent)
+      if (typeof childComponent === "string") {
+        throw new Error("Unexpected string child in non-Text node")
       }
+      const renderedChildComponent = recurseTree(childComponent, childNode)
+      newChildren.push(renderedChildComponent)
     }
   }
 

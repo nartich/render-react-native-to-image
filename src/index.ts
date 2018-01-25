@@ -55,8 +55,8 @@ export const renderToSVGString = (root: Component, width, height) => {
     return treeToSVG(renderedComponentRoot, settings)
 }
 
-if (typeof expect !== "undefined") {
-    expect.extend({
+// if (typeof expect !== "undefined") {
+expect.extend({
         toMatchSVGSnapshot(root: Component, width, height) {
             if (!root) { return fail("A falsy Component was passed to toMatchSVGSnapshot") }
             if (!root.props) { return fail("A Component without props was passed to toMatchSVGSnapshot") }
@@ -103,4 +103,4 @@ if (typeof expect !== "undefined") {
             }
         }
     } as any)
-}
+// }

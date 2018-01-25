@@ -45,7 +45,7 @@ describe("recurseTree", () => {
         width: 1024,
         height: 768,
       }
-      const results = recurseTree(0, root, settings)
+      const results = recurseTree(0, root, null, settings)
       expect(mockNodeToSVG.mock.calls.length).toEqual(1)
     })
 
@@ -59,7 +59,7 @@ describe("recurseTree", () => {
         styleMap: new WeakMap()
       }
 
-      const results = recurseTree(0, root, settings)
+      const results = recurseTree(0, root, null, settings)
       expect(mockNodeToSVG.mock.calls.length).toEqual(3)
     })
 })

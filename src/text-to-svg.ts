@@ -22,7 +22,7 @@ const textAnchors = {
   right: "end",
 }
 
-export default (x, y, width, height, lines: TextWithAttributedStyle[]): string => {
+export default ({left, top, width, height}, style: any, parentStyle: any, lines: TextWithAttributedStyle[]): string => {
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   const originX = width * textAligns[textAlign]
 
@@ -32,7 +32,7 @@ export default (x, y, width, height, lines: TextWithAttributedStyle[]): string =
 
     const tspans = attributedStyles.map(({ start, end, style }, i) => (
       $("tspan", {
-        x: i === 0 ? originX : undefined,
+        x: i === 0 ? left + originX : undefined,
         y: i === 0 ? originY : undefined,
         fill: style.color,
         ...textStyles(style),
@@ -47,13 +47,13 @@ export default (x, y, width, height, lines: TextWithAttributedStyle[]): string =
       textLines: accum.textLines.concat(tspans.join("\n"))
     }
   }, {
-    y,
+    y: top,
     textLines: []
   } as { y: number, textLines: string[] })
 
   return $("text", {
-    x,
-    y,
+    // x: left + originX,
+    // y: top,
     "text-anchor": textAlign !== "left" ? textAnchors[textAlign as string] : undefined,
   }, textLines.join("\n"))
 }

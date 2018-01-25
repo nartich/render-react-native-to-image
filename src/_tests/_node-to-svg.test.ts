@@ -26,7 +26,7 @@ describe("nodeToSVG", () => {
         height: 768,
       }
 
-      const results = nodeToSVG(0, rootNode, settings)
+      const results = nodeToSVG(0, rootNode, null, settings)
       expect(results).toMatchSnapshot()
     })
 })
