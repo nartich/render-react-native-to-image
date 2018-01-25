@@ -1,6 +1,6 @@
 import * as yoga from "yoga-layout"
 import { RenderedComponent, Settings } from "./index"
-import nodeToSVG from "./node-to-svg"
+import nodeToSVG, {getOpacity} from "./node-to-svg"
 import {styleFromComponent} from "./component-to-node"
 import wsp from "./whitespace"
 
@@ -33,11 +33,6 @@ export const svgWrapper = (bodyText: string, settings: Settings) =>
 ${bodyText}
 </svg>
 `
-
-const getOpacity = node => {
-  const {opacity = 1} = styleFromComponent(node);
-  return opacity
-};
 
 export const groupWrap = (node: RenderedComponent, indent: number, recurse: () => string) => `
 
