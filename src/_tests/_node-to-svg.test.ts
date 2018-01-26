@@ -1,6 +1,6 @@
 import * as yoga from "yoga-layout"
 
-import nodeToSVG from "../node-to-svg"
+import nodeToSVG from "../svg/node-to-svg"
 import {fontState} from '../font-loader'
 
 const component = (name) => ({

@@ -1,7 +1,7 @@
 
 import componentTreeToNodeTree from "./component-tree-to-nodes"
 import renderedComponentTree from "./reapply-layouts-to-components"
-import treeToSVG from "./tree-to-svg"
+import treeToSVG from "./svg/tree-to-svg"
 import * as yoga from "yoga-layout"
 import {FontState} from './font-utils'
 

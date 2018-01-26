@@ -1,6 +1,6 @@
 import * as yoga from "yoga-layout"
 
-import treeToSVG from "../tree-to-svg"
+import treeToSVG from "../svg/tree-to-svg"
 import {fontState} from '../font-loader'
 
 describe("treeToSVG", () => {

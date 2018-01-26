@@ -6,7 +6,7 @@ import * as renderer from "react-test-renderer"
 
 import componentTreeToNodeTree from "../component-tree-to-nodes"
 import renderedComponentTree from "../reapply-layouts-to-components"
-import treeToSVG from "../tree-to-svg"
+import treeToSVG from "../svg/tree-to-svg"
 import {fontState} from '../font-loader'
 
 import * as fs from "fs"

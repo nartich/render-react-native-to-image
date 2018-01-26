@@ -1,9 +1,9 @@
 import * as yoga from "yoga-layout"
-import { RenderedComponent, Settings } from "./index"
+import { RenderedComponent, Settings } from "../index"
 import nodeToSVG, {getOpacity} from "./node-to-svg"
-import {styleFromComponent} from "./component-to-node"
-import wsp from "./whitespace"
-import { FontState } from './font-utils'
+import {styleFromComponent} from "../component-to-node"
+import wsp from "../whitespace"
+import { FontState } from '../font-utils'
 
 export const recurseTree =
   (fontState: FontState, indent: number, root: RenderedComponent, settings: Settings) => {
@@ -35,9 +35,15 @@ ${bodyText}
 </svg>
 `
 
+const opacityProp = node => {
+  const opacity = getOpacity(node);
+  if (opacity === 1) return ''
+  return ` opacity='${opacity}'`
+}
+
 export const groupWrap = (node: RenderedComponent, indent: number, recurse: () => string) => `
 
-${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})' opacity='${getOpacity(node)}'>${recurse()}
+${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})'${opacityProp(node)}>${recurse()}
 ${wsp(indent)}</g>
 `
 

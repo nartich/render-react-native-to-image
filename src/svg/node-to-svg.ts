@@ -1,11 +1,12 @@
 import {ViewStyle} from "react-native"
 import * as yoga from "yoga-layout"
-import { styleFromComponent, textLines } from "./component-to-node"
+import { styleFromComponent, textLines } from "../component-to-node"
 import textToSvg from "./text-to-svg"
-import { FontState } from './font-utils'
+import { FontState } from '../font-utils'
 
-import { RenderedComponent, Settings } from "./index"
-import wsp from "./whitespace"
+import { RenderedComponent, Settings } from "../index"
+import wsp from "../whitespace"
+import renderRect from './rect'
 
 export const getOpacity = node => {
   const {opacity = 1} = styleFromComponent(node)
@@ -30,12 +31,12 @@ const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent)
   Image: (fontState, node) => {
     const style = styleFromComponent(node)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
-      console.log(style)
       const uri = node.props.source.testUri || node.props.source.uri
+      const opacity = getOpacity(node)
       return [svg("image", node.layout, {
         "xlink:href": uri,
         "preserveAspectRatio": node.props.resizeMode === "cover" ? "xMidYMid slice" : "",
-        "opacity": getOpacity(node)
+        opacity: opacity === 1 ? undefined : opacity,
       })]
     } else {
       return renderers.View(fontState, node)
@@ -43,46 +44,19 @@ const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent)
   },
   Text: (fontState, node) => [textToSvg(fontState, node.layout, styleFromComponent(node), node[textLines])],
   View: (fontState, node) => {
+      const opacity = getOpacity(node)
       const attributes: any = {
         type: node.type,
-        fill: "transparent",
-        stroke: "none",
-        opacity: getOpacity(node),
+        // fill: "transparent",
+        // stroke: "none",
+        opacity: opacity === 1 ? undefined : opacity,
         // "stroke-width": "0.5",
         // "stroke": "#ff00ff",
         // "stroke-opacity": "0.3",
       }
       const style = styleFromComponent(node)
-      if (style.backgroundColor) {
-        attributes.fill = style.backgroundColor
-        attributes["fill-opacity"] = 1
-      }
-      if (style.borderRadius) {
-        attributes.rx = style.borderRadius
-        attributes.ry = style.borderRadius
-      }
-      const nodes = [svg("rect", node.layout, attributes)]
 
-      // TODO: borderWidth, also border radius
-      const {left, top, width, height} = node.layout
-      if (style.borderBottomWidth) {
-        const w = style.borderBottomWidth
-        nodes.push(svg("rect", {left, top: top + height - w / 2, height: w, width}, {fill: style.borderBottomColor}))
-      }
-      if (style.borderTopWidth) {
-        const w = style.borderTopWidth
-        nodes.push(svg("rect", {left, top: top - w / 2, height: w, width}, {fill: style.borderTopColor}))
-      }
-      if (style.borderLeftWidth) {
-        const w = style.borderLeftWidth
-        nodes.push(svg("rect", {left: left - w / 2, top, height, width: w}, {fill: style.borderLeftColor}))
-      }
-      if (style.borderRightWidth) {
-        const w = style.borderRightWidth
-        nodes.push(svg("rect", {left: left + width - w / 2, top, height, width: w}, {fill: style.borderRightColor}))
-      }
-
-      return nodes
+      return [renderRect(node.layout, style, attributes)]
   }
 }
 
@@ -106,7 +80,9 @@ const attributes = (settings) => {
   for (const key in settings) {
     if (settings.hasOwnProperty(key)) {
       const element = settings[key]
-      attributeString += ` ${key}="${element}"`
+      if (element != null) {
+        attributeString += ` ${key}="${element}"`
+      }
     }
   }
   return attributeString
