@@ -1,6 +1,6 @@
 src
 build/_tests
-build/src
+jest
 .vscode
 .babelrc
 .travis.yml
@@ -8,3 +8,4 @@ dangerfile.ts
 tsconfig.json
 tslint.json
 yarn.lock
+package-lock.json
