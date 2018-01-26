@@ -30,9 +30,10 @@
   "scripts": {
     "type-check": "tsc --noEmit",
     "build": "tsc && cp src/external-api.d.ts build",
+    "test": "echo 'no tests haha'",
     "watch": "tsc --watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
-    "prepush": "yarn build && yarn jest"
+    "prepush": "yarn build && yarn test"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [

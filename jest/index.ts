@@ -1,9 +1,7 @@
 import * as fs from "fs"
 import * as path from "path"
 
-import * as yoga from "yoga-layout"
-
-import renderToSVGString from './render-to-string'
+import {renderToSVGString, Component} from 'render-react-to-svg'
 
 // toMatchSVGSnapshot(1024, 768)
 
