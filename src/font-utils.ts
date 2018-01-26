@@ -1,11 +1,7 @@
 import * as fontManager from "font-manager"
 import * as fontkit from "fontkit"
 import * as fs from "fs"
-
-export type FontState = {
-  fonts: {[key: string]: any},
-  fallbacks: {[key: string]: string}
-};
+import {FontCache} from './'
 
 const weights = {
   normal: "400",
@@ -50,7 +46,7 @@ const matchNames = (target: string, names: NameMatch[], defaultValue: string): s
   return match ? match.value : defaultValue
 }
 
-const addFont = (fontState: FontState, font, style) => {
+const addFont = (fontState: FontCache, font, style) => {
   const fontFamily = style.fontFamily || font.familyName
   const fontWeight = style.fontWeight || matchNames(font.subfamilyName, weightNames, "400")
   const fontStyle = style.fontStyle || matchNames(font.subfamilyName, italicNames, "normal")
@@ -63,10 +59,10 @@ const addFont = (fontState: FontState, font, style) => {
   fontState.fonts[key] = font
 }
 
-export const init = () => ({fonts: {}, fallbacks: {}});
+export const initFontCache = () => ({fonts: {}, fallbacks: {}});
 
 export const loadFont = (
-  fontState: FontState,
+  fontState: FontCache,
   fontFile: Buffer,
   style: { fontFamily?: string, fontWeight?: string, fontStyle?: string, postscriptName?: string } = {}
 ) => {
@@ -78,11 +74,11 @@ export const loadFont = (
   }
 }
 
-export const addFontFallback = (fontState: FontState, fontFamily: string, fallback: string) => {
+export const addFontFallback = (fontState: FontCache, fontFamily: string, fallback: string) => {
   fontState.fallbacks[fontFamily] = fallback
 }
 
-export const fontForStyle = (fontState: FontState, style, force = false) => {
+export const fontForStyle = (fontState: FontCache, style, force = false) => {
   const key = keyFor(style)
   if (fontState.fonts[key]) {
     return fontState.fonts[key]
@@ -105,6 +101,6 @@ export const fontForStyle = (fontState: FontState, style, force = false) => {
   return fontForStyle(fontState, style, true)
 }
 
-export const fontWithFallbacks = (fontState: FontState, fontFamily: string): string => (
+export const fontWithFallbacks = (fontState: FontCache, fontFamily: string): string => (
   fontState.fallbacks[fontFamily] ? `'${fontFamily}', ${fontState.fallbacks[fontFamily]}` : `'${fontFamily}'`
 )

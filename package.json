@@ -1,13 +1,13 @@
 {
-  "name": "jest-snapshots-svg",
-  "version": "0.0.24",
-  "description": "Generate SVG Snapshots of React Native Component Trees",
+  "name": "render-react-to-svg",
+  "version": "0.0.1",
+  "description": "Generate an SVG image of React Native Component Trees",
   "main": "build/index.js",
   "files": [
     "build/*"
   ],
   "typings": "build/external-api.d.ts",
-  "author": "Orta Therox <orta.therox@gmail.com> & Art.sy Inc",
+  "author": "Orta Therox <orta.therox@gmail.com> & Art.sy Inc & Jared Forsyth <jared@jaredforsyth.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^20.0.8",

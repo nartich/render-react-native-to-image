@@ -1,14 +1,12 @@
-# jest-snapshots-svg
+# render-react-to-svg
 
 Take a React Native component tree, and render it into an SVG.
 
 ```ts
-// _tests/render.test.tsx
-
 import * as React from "react"
 import { Text } from "react-native"
 import * as renderer from "react-test-renderer"
-import "jest-snapshots-svg"
+import {renderToSVGString} from "jest-snapshots-svg"
 
 describe("Fixtures", () => {
   it("does some simple JSX", () => {

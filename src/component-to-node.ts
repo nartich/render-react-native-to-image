@@ -2,7 +2,7 @@ import * as yoga from "yoga-layout"
 import extractText from "./extract-text"
 import { Component, Settings } from "./index"
 import { breakLines, measureLines } from "./text-layout"
-import { FontState } from './font-utils'
+import { FontCache } from './'
 
 export const textLines = Symbol("textLines")
 
@@ -17,7 +17,7 @@ const getImageSize = (basePath: string, uri: string) => {
   return getSize(fullPath)
 }
 
-const componentToNode = (basePath: string, fontState: FontState, component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
+const componentToNode = (component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
   // Do we need to pass in the parent node too?
   const node = yoga.Node.create()
   let hasStyle = parentStyleOverrides || (component.props && component.props.style)
@@ -25,7 +25,7 @@ const componentToNode = (basePath: string, fontState: FontState, component: Comp
 
   if (component.type === "Image" && component.props.source && component.props.source.testUri) {
     if (style.width == null || style.height == null) {
-      const {width, height} = getImageSize(basePath, component.props.source.testUri)
+      const {width, height} = getImageSize(settings.basePath, component.props.source.testUri)
       if (style.width == null) style.width = width
       if (style.height == null) style.height = height
       hasStyle = true
@@ -136,9 +136,9 @@ const componentToNode = (basePath: string, fontState: FontState, component: Comp
     const styledText = extractText(component)
     component[textLines] = null
     node.setMeasureFunc(width => {
-      const lines = breakLines(fontState, styledText, width)
+      const lines = breakLines(settings.fontCache, styledText, width)
       component[textLines] = lines
-      return measureLines(fontState, lines)
+      return measureLines(settings.fontCache, lines)
     })
   }
 

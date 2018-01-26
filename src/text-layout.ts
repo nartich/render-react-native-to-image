@@ -1,8 +1,9 @@
 import * as LineBreaker from "linebreak"
 import { AttributedStyle, TextWithAttributedStyle } from "./extract-text"
-import { fontForStyle, FontState } from "./font-utils"
+import { fontForStyle } from "./font-utils"
+import { FontCache } from './'
 
-export const lineWidth = (fontState: FontState, { text, attributedStyles }: TextWithAttributedStyle): number =>
+export const lineWidth = (fontState: FontCache, { text, attributedStyles }: TextWithAttributedStyle): number =>
   attributedStyles.reduce((x, { start, end, style }, i) => {
     let body = text.slice(start, end)
     // Trim trailling whitespace
@@ -25,12 +26,12 @@ export const lineFontSize = (line: TextWithAttributedStyle): number =>
     ...line.attributedStyles.map(({ style }) => style.fontSize)
   )
 
-const baselineForAttributedStyle = (fontState: FontState, { style }: AttributedStyle): number => {
+const baselineForAttributedStyle = (fontState: FontCache, { style }: AttributedStyle): number => {
   const font = fontForStyle(fontState, style)
   return font.ascent / font.unitsPerEm * style.fontSize
 }
 
-export const lineBaseline = (fontState: FontState, line: TextWithAttributedStyle): number =>
+export const lineBaseline = (fontState: FontCache, line: TextWithAttributedStyle): number =>
   Math.max(0, ...line.attributedStyles.map(x => baselineForAttributedStyle(fontState, x)))
 
 const textSlice = (
@@ -49,7 +50,7 @@ const textSlice = (
 })
 
 export const breakLines = (
-  fontState: FontState,
+  fontState: FontCache,
   textStyle: TextWithAttributedStyle,
   width: number
 ): TextWithAttributedStyle[] => {

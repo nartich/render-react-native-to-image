@@ -3,10 +3,10 @@ import { RenderedComponent, Settings } from "../index"
 import nodeToSVG, {getOpacity} from "./node-to-svg"
 import {styleFromComponent} from "../component-to-node"
 import wsp from "../whitespace"
-import { FontState } from '../font-utils'
+import { FontCache } from '../'
 
 export const recurseTree =
-  (fontState: FontState, indent: number, root: RenderedComponent, settings: Settings) => {
+  (fontState: FontCache, indent: number, root: RenderedComponent, settings: Settings) => {
 
     const nodeString = nodeToSVG(fontState, indent, root, settings)
 
@@ -47,7 +47,7 @@ ${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})'$
 ${wsp(indent)}</g>
 `
 
-const treeToSVG = (fontState: FontState, root: RenderedComponent, settings: Settings) => {
+const treeToSVG = (fontState: FontCache, root: RenderedComponent, settings: Settings) => {
   return svgWrapper(recurseTree(fontState, 0, root, settings), settings)
 }
 

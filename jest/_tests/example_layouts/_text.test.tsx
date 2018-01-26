@@ -6,13 +6,14 @@ import * as React from "react"
 import { Text, View } from "react-native"
 import * as renderer from "react-test-renderer"
 
-import { addFontFallback, loadFont } from "../../index"
+import { addFontFallback, loadFont, initFontCache } from "../../index"
 
-loadFont(fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Regular.ttf")))
-loadFont(fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Bold.ttf")))
-loadFont(fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Italic.ttf")))
-loadFont(fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-BoldItalic.ttf")))
-addFontFallback("Arimo", "'Helvetica', 'Arial', sans-serif")
+const cache = initFontCache();
+loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Regular.ttf")))
+loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Bold.ttf")))
+loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Italic.ttf")))
+loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-BoldItalic.ttf")))
+addFontFallback(cache, "Arimo", "'Helvetica', 'Arial', sans-serif")
 
 it("Renders a line of text", () => {
   const jsx =

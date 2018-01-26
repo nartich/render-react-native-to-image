@@ -2,7 +2,7 @@ import {ViewStyle} from "react-native"
 import * as yoga from "yoga-layout"
 import { styleFromComponent, textLines } from "../component-to-node"
 import textToSvg from "./text-to-svg"
-import { FontState } from '../font-utils'
+import { FontCache } from '../'
 
 import { RenderedComponent, Settings } from "../index"
 import wsp from "../whitespace"
@@ -26,7 +26,7 @@ export const getOpacity = node => {
 //   }
 // }
 
-const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent) => string[]} = {
+const renderers: {[key: string]: (fontState: FontCache, node: RenderedComponent) => string[]} = {
   RCTScrollView: (fontState, node) => renderers.View(fontState, node),
   Image: (fontState, node) => {
     const style = styleFromComponent(node)
@@ -60,7 +60,7 @@ const renderers: {[key: string]: (fontState: FontState, node: RenderedComponent)
   }
 }
 
-const svgForNode = (fontState: FontState, node) => {
+const svgForNode = (fontState: FontCache, node) => {
   if (!renderers[node.type]) {
     console.log("unexpected node type", node.type)
     return renderers.View(fontState, node)
@@ -69,7 +69,7 @@ const svgForNode = (fontState: FontState, node) => {
   }
 }
 
-const nodeToSVG = (fontState: FontState, indent: number, node: RenderedComponent, settings: Settings) => {
+const nodeToSVG = (fontState: FontCache, indent: number, node: RenderedComponent, settings: Settings) => {
   const nodes: string[] = svgForNode(fontState, node)
   return nodes.map(text => "\n" + wsp(indent) + text).join("")
 }
