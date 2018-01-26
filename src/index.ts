@@ -1,8 +1,8 @@
 
 import renderToSVGString from './render-to-string'
 
-export {initFontCache, loadFont, addFontFallback} from './font-utils'
 export {renderToSVGString}
+export {initFontCache, loadFont, addFontFallback} from './font-utils'
 
 export type FontCache = {
   fonts: {[key: string]: any},
@@ -31,7 +31,7 @@ export interface RenderedComponent {
 }
 
 export interface Settings {
-    basePath: string
+    basePath: null | string
     fontCache: FontCache
     width: number
     height: number

@@ -7,7 +7,7 @@ import {FontCache} from './'
 
 import {Component, Settings} from './'
 
-const renderToSVGString = (root: Component, settings: Settings) => {
+const renderToSVGString = (root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: null}) => {
     const rootNode = componentTreeToNodeTree(root, settings)
     if (!rootNode) { return }
 
