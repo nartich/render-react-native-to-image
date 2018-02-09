@@ -1,9 +1,9 @@
 import * as yoga from "yoga-layout"
-import { RenderedComponent, Settings } from "../index"
+import { RenderedComponent, Settings } from "../layout"
 import nodeToSVG, {getOpacity} from "./node-to-svg"
-import {styleFromComponent} from "../component-to-node"
+import {styleFromComponent} from "../layout/component-to-node"
 import wsp from "../whitespace"
-import { FontCache } from '../'
+import { FontCache } from '../layout'
 
 export const recurseTree =
   (fontState: FontCache, indent: number, root: RenderedComponent, settings: Settings) => {

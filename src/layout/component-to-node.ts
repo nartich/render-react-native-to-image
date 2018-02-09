@@ -1,6 +1,6 @@
 import * as yoga from "yoga-layout"
 import extractText from "./extract-text"
-import { Component, Settings } from "./index"
+import { Component, Settings } from "./"
 import { breakLines, measureLines } from "./text-layout"
 import { FontCache } from './'
 

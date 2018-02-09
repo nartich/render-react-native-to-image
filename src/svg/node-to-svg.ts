@@ -1,10 +1,10 @@
 import {ViewStyle} from "react-native"
 import * as yoga from "yoga-layout"
-import { styleFromComponent, textLines } from "../component-to-node"
+import { styleFromComponent, textLines } from "../layout/component-to-node"
 import textToSvg from "./text-to-svg"
-import { FontCache } from '../'
+import { FontCache } from '../layout/'
 
-import { RenderedComponent, Settings } from "../index"
+import { RenderedComponent, Settings } from "../layout/index"
 import wsp from "../whitespace"
 import renderRect from './rect'
 
