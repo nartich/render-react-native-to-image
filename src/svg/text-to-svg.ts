@@ -24,6 +24,7 @@ const textAnchors = {
 }
 
 export default (fontState: FontCache, {left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): string => {
+  if (!lines.length) return ''
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   const originX = width * textAligns[textAlign]
 
