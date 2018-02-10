@@ -1,5 +1,6 @@
 import {ViewStyle} from "react-native"
 import * as yoga from "yoga-layout"
+import * as path from 'path'
 import { styleFromComponent, textLines } from "../layout/component-to-node"
 import textToSvg from "./text-to-svg"
 import { FontCache } from '../layout/'
@@ -20,8 +21,9 @@ const renderers: {[key: string]: (settings: Settings, node: RenderedComponent) =
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       const uri = node.props.source.testUri || node.props.source.uri
       const opacity = getOpacity(node)
+      const fullUri = uri.startsWith('/') ? uri : uri.match(/^https?:/) ? uri : path.relative(settings.renderPath, path.join(settings.basePath, uri))
       return [svg("image", node.layout, {
-        "xlink:href": uri,
+        "xlink:href": fullUri,
         "preserveAspectRatio": node.props.resizeMode === "cover" ? "xMidYMid slice" : "",
         opacity: opacity === 1 ? undefined : opacity,
       })]

@@ -45,7 +45,10 @@ describe("Counting nodes", () => {
       console.log(__dirname)
       const settings = {
         assetMap: {},
-        width: 320, height: 480, fontCache: fontCache, basePath: __dirname + '/../../'}
+        width: 320, height: 480, fontCache: fontCache,
+        basePath: __dirname + '/../../',
+        renderPath: __dirname,
+      }
       const node = layoutNode(component, settings)
       const svg = renderToSVG(node, settings)
       fs.writeFileSync(__dirname + '/Basic.test.svg', svg)

@@ -103,9 +103,9 @@ const renderRect = (ctx, layout, style) => {
 const prom = fn => new Promise((res, rej) => fn((err, val) => err ? rej(err) : res(val)));
 
 const tintedImage = async (imagePath, tintColor) => {
-  const getSize = require('image-size')
-  const {width, height} = getSize(imagePath)
   const img = await getImage(imagePath)
+  const width = img.naturalWidth
+  const height = img.naturalHeight
   const canvas = createCanvas(width, height)
   const ctx = canvas.getContext('2d')
   ctx.fillStyle = tintColor

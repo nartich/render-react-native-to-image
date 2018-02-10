@@ -31,6 +31,7 @@ export interface RenderedComponent {
 
 export interface Settings {
     basePath: string
+    renderPath: string
     fontCache: FontCache
     assetMap: {[key: string]: string}
     width: number
