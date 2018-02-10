@@ -8,14 +8,14 @@ export {registerCanvasFont}
 
 export {Component, Settings}
 
-export const renderToSVGString = (root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./"}) => {
+export const renderToSVGString = (root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./", assetMap: {}}) => {
     if (!settings.fontCache)  {
         throw new Error('No font cache provided')
     }
     return treeToSVG(layoutRoot(root, settings), settings)
 }
 
-export const renderToCanvas = async (dest: string, root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./"}) => {
+export const renderToCanvas = async (dest: string, root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./", assetMap: {}}) => {
     if (!settings.fontCache)  {
         throw new Error('No font cache provided')
     }

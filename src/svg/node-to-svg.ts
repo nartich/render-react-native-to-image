@@ -13,9 +13,9 @@ export const getOpacity = node => {
   return opacity
 }
 
-const renderers: {[key: string]: (fontState: FontCache, node: RenderedComponent) => string[]} = {
-  RCTScrollView: (fontState, node) => renderers.View(fontState, node),
-  Image: (fontState, node) => {
+const renderers: {[key: string]: (settings: Settings, node: RenderedComponent) => string[]} = {
+  RCTScrollView: (settings, node) => renderers.View(settings, node),
+  Image: (settings, node) => {
     const style = styleFromComponent(node)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       const uri = node.props.source.testUri || node.props.source.uri
@@ -26,11 +26,11 @@ const renderers: {[key: string]: (fontState: FontCache, node: RenderedComponent)
         opacity: opacity === 1 ? undefined : opacity,
       })]
     } else {
-      return renderers.View(fontState, node)
+      return renderers.View(settings, node)
     }
   },
-  Text: (fontState, node) => [textToSvg(fontState, node.layout, styleFromComponent(node), node[textLines])],
-  View: (fontState, node) => {
+  Text: (settings, node) => [textToSvg(settings.fontCache, node.layout, styleFromComponent(node), node[textLines])],
+  View: (settings, node) => {
       const opacity = getOpacity(node)
       const attributes: any = {
         type: node.type,
@@ -47,17 +47,17 @@ const renderers: {[key: string]: (fontState: FontCache, node: RenderedComponent)
   }
 }
 
-const svgForNode = (fontState: FontCache, node) => {
+const svgForNode = (settings: Settings, node) => {
   if (!renderers[node.type]) {
     console.log("unexpected node type", node.type)
-    return renderers.View(fontState, node)
+    return renderers.View(settings, node)
   } else {
-    return renderers[node.type](fontState, node)
+    return renderers[node.type](settings, node)
   }
 }
 
 const nodeToSVG = (indent: number, node: RenderedComponent, settings: Settings) => {
-  const nodes: string[] = svgForNode(settings.fontCache, node)
+  const nodes: string[] = svgForNode(settings, node)
   return nodes.map(text => "\n" + wsp(indent) + text).join("")
 }
 

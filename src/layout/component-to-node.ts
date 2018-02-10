@@ -30,9 +30,6 @@ const componentToNode = (component: Component, settings: Settings, parentStyleOv
 
   if (component.type === "Image" && component.props.source && component.props.source.testUri) {
     if (style.width == null || style.height == null) {
-      // if (settings.basePath == null) {
-      //   throw new Error('You must provide a `basePath` to resolve the size of local images')
-      // }
       const {width, height} = getImageSize(settings.basePath, component.props.source.testUri)
       if (style.width == null) style.width = width
       if (style.height == null) style.height = height

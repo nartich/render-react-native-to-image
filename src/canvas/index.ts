@@ -108,33 +108,39 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
   Image: async (ctx, settings, node) => {
     const style = styleFromComponent(node)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
-      const uri = node.props.source.testUri || node.props.source.uri
+      let uri = node.props.source.testUri || node.props.source.uri
+      uri = settings.assetMap[uri] || uri
+      console.log(uri)
+
       const opacity = getOpacity(node)
       // TODO
       // node.props.resizeMode === "cover"
-      const fullPath = path.join(settings.basePath, uri)
       const {top,left,width,height} = node.layout
-      if (fullPath.match(/^https?:\/\//)) {
+      if (uri.match(/^https?:\/\//)) {
         const img = new Image()
-        img.src = await fetch(fullPath).then(response => response.buffer())
-        ctx.drawImage(img, left, top, width, height)
-      } else if (fs.existsSync(fullPath)) {
-        const img = new Image()
-        img.src = await prom(done => fs.readFile(fullPath, done));
+        img.src = await fetch(uri).then(response => response.buffer())
         ctx.drawImage(img, left, top, width, height)
       } else {
-        ctx.fillStyle = '#aaa'
-        ctx.fillRect(left, top, width, height)
-        ctx.strokeStyle = '#888'
-        ctx.strokeRect(left, top, width, height)
-        ctx.beginPath()
-        ctx.moveTo(left, top)
-        ctx.lineTo(left + width, top + height)
-        ctx.stroke()
-        ctx.beginPath()
-        ctx.moveTo(left + width, top)
-        ctx.lineTo(left, top + height)
-        ctx.stroke()
+
+        const fullPath = path.join(settings.basePath, uri)
+        if (fs.existsSync(fullPath)) {
+          const img = new Image()
+          img.src = await prom(done => fs.readFile(fullPath, done));
+          ctx.drawImage(img, left, top, width, height)
+        } else {
+          ctx.fillStyle = '#aaa'
+          ctx.fillRect(left, top, width, height)
+          ctx.strokeStyle = '#888'
+          ctx.strokeRect(left, top, width, height)
+          ctx.beginPath()
+          ctx.moveTo(left, top)
+          ctx.lineTo(left + width, top + height)
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.moveTo(left + width, top)
+          ctx.lineTo(left, top + height)
+          ctx.stroke()
+        }
       }
     } else {
       await renderers.View(ctx, settings, node)
