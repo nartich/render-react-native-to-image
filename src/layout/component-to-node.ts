@@ -13,7 +13,7 @@ const getImageSize = (basePath: string, uri: string) => {
   const path = require("path")
   const getSize = require("image-size")
 
-  const fullPath = path.join(basePath, uri)
+  const fullPath = uri.startsWith('/') ? uri : path.join(basePath, uri)
   // console.log("Want to find the dimensions for this thing", fullPath)
   if (fs.existsSync(fullPath)) {
     return getSize(fullPath)

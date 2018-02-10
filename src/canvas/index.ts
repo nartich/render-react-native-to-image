@@ -103,6 +103,28 @@ const renderRect = (ctx, layout, style) => {
 
 const prom = fn => new Promise((res, rej) => fn((err, val) => err ? rej(err) : res(val)));
 
+const tintedImage = async (imagePath, tintColor) => {
+  const getSize = require('image-size')
+  const {width, height} = getSize(imagePath)
+  const img = await getImage(imagePath)
+  const canvas = createCanvas(width, height)
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = tintColor
+  ctx.fillRect(0, 0, width, height)
+  console.error('WATTT', ctx.globalCompositeOperation)
+  ctx.globalCompositeOperation = 'destination-in'
+  ctx.drawImage(img, 0, 0)
+  const tinted = new Image()
+  tinted.src = canvas.toBuffer()
+  return tinted
+};
+
+const getImage = async (imagePath) => {
+  const img = new Image()
+  img.src = await prom(done => fs.readFile(imagePath, done))
+  return img
+}
+
 const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedComponent) => Promise<void>} = {
   RCTScrollView: (ctx, settings, node) => renderers.View(ctx, settings, node),
   Image: async (ctx, settings, node) => {
@@ -122,8 +144,8 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       } else {
         const fullPath = uri.startsWith('/') ? uri : path.join(settings.basePath, uri)
         if (fs.existsSync(fullPath)) {
-          const img = new Image()
-          img.src = await prom(done => fs.readFile(fullPath, done));
+          const img = await (style.tintColor ? tintedImage(fullPath, style.tintColor) : getImage(fullPath))
+          // img.src = await prom(done => fs.readFile(fullPath, done));
           ctx.drawImage(img, left, top, width, height)
         } else {
           console.warn('Referenced image not found:', uri)
