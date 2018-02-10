@@ -1,12 +1,11 @@
 {
-  "name": "render-react-to-svg",
+  "name": "render-react-native-to-image",
   "version": "0.0.1",
-  "description": "Generate an SVG image of React Native Component Trees",
+  "description": "Generate an SVG or PNG image of a React Native Component Tree",
   "main": "build/index.js",
   "files": [
     "build/*"
   ],
-  "typings": "build/external-api.d.ts",
   "author": "Orta Therox <orta.therox@gmail.com> & Art.sy Inc & Jared Forsyth <jared@jaredforsyth.com>",
   "license": "MIT",
   "devDependencies": {
@@ -29,7 +28,7 @@
   },
   "scripts": {
     "type-check": "tsc --noEmit",
-    "build": "tsc && cp src/external-api.d.ts build",
+    "build": "tsc",
     "test": "jest",
     "watch": "tsc --watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",

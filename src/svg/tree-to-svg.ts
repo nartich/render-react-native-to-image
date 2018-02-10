@@ -28,9 +28,10 @@ export const recurseTree =
     })
   }
 
-export const svgWrapper = (bodyText: string, settings: Settings) =>
+export const svgWrapper = (bodyText: string, root: RenderedComponent, settings: Settings) =>
   `<?xml version="1.0" encoding="UTF-8" ?>
-<svg width="${settings.width}" height="${settings.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<svg width="${root.layout.width}" height="${root.layout.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+${settings.backgroundColor ? `<rect width="${root.layout.width}" height="${root.layout.width}" fill="${settings.backgroundColor}" />` : ''}
 ${bodyText}
 </svg>
 `
@@ -48,7 +49,7 @@ ${wsp(indent)}</g>
 `
 
 const treeToSVG = (root: RenderedComponent, settings: Settings) => {
-  return svgWrapper(recurseTree(0, root, settings), settings)
+  return svgWrapper(recurseTree(0, root, settings), root, settings)
 }
 
 export default treeToSVG

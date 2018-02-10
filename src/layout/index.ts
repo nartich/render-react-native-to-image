@@ -30,6 +30,7 @@ export interface RenderedComponent {
 }
 
 export interface Settings {
+    backgroundColor?: string
     basePath: string
     renderPath: string
     fontCache: FontCache

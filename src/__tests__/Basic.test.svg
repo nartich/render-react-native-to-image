@@ -4,7 +4,7 @@
  <rect type="View" x="0.5" y="0.5" width="319" height="479" fill="none" stroke="red" stroke-width="1"/>
 
  <g transform='translate(0, 0)'>
-   <image xlink:href="src/__tests__/example.png" preserveAspectRatio="" x="136" y="74" width="48" height="48"/>
+   <image xlink:href="example.png" preserveAspectRatio="" x="136" y="74" width="48" height="48"/>
    <text><tspan x="127" y="134.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Hello folks</tspan></text>
    <rect type="View" x="135" y="140" width="50" height="50" fill="powderblue"/>
    <text><tspan x="112" y="202.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Ok </tspan>
