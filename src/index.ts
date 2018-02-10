@@ -15,11 +15,11 @@ export const renderToSVGString = (root: Component, settings: Settings = {width: 
     return treeToSVG(layoutRoot(root, settings), settings)
 }
 
-export const renderToCanvas = async (dest: string, root: Component, settings: Settings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./", renderPath: './', assetMap: {}}) => {
+export const renderToCanvas = async (dest: string, root: Component, settings: Settings, backgroundColor: null | string) => {
     if (!settings.fontCache)  {
         throw new Error('No font cache provided')
     }
-    await treeToCanvas(dest, layoutRoot(root, settings), settings)
+    await treeToCanvas(dest, layoutRoot(root, settings), settings, backgroundColor)
 }
 
 export {initFontCache, loadFont, addFontFallback} from './layout/font-utils'

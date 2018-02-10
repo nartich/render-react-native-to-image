@@ -180,6 +180,8 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
 }
 
 const renderNode = async (ctx, node: RenderedComponent, settings: Settings) => {
+  const pre = ctx.globalAlpha
+  ctx.globalAlpha *= getOpacity(node)
   if (!renderers[node.type]) {
     await renderers.View(ctx, settings, node)
   } else {
@@ -193,11 +195,16 @@ const renderNode = async (ctx, node: RenderedComponent, settings: Settings) => {
     }
     ctx.restore()
   }
+  ctx.globalAlpha = pre
 };
 
-const renderToCanvas = async (dest: string, root: RenderedComponent, settings: Settings) => {
-  const canvas = createCanvas(settings.width, settings.height);
+const renderToCanvas = async (dest: string, root: RenderedComponent, settings: Settings, backgroundColor: null | string = null) => {
+  const canvas = createCanvas(root.layout.width, root.layout.height);
   const ctx = canvas.getContext('2d')
+  if (backgroundColor) {
+    ctx.fillStyle = backgroundColor
+    ctx.fillRect(0, 0, root.layout.width, root.layout.height)
+  }
   await renderNode(ctx, root, settings);
   await prom(done => fs.writeFile(dest, canvas.toBuffer(), done))
 }
