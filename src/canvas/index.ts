@@ -112,7 +112,7 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       const opacity = getOpacity(node)
       // TODO
       // node.props.resizeMode === "cover"
-      const fullPath = uri
+      const fullPath = path.join(settings.basePath, uri)
       const {top,left,width,height} = node.layout
       if (fullPath.match(/^https?:\/\//)) {
         const img = new Image()

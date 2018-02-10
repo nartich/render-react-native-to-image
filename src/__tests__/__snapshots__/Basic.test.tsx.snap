@@ -16,7 +16,7 @@ exports[`Counting nodes it is good with memory 1`] = `
   <Image
     source={
       Object {
-        "testUri": "./example.png",
+        "testUri": "src/__tests__/example.png",
       }
     }
   />

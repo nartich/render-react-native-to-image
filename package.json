@@ -45,10 +45,15 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "js",
-      "node"
+      "png",
+      "node",
+      "js"
     ],
+    "moduleNameMapper": {
+      "^([./a-zA-Z0-9$_-]+\\.png)$": "$1"
+    },
     "transform": {
+      "\\.(bmp|gif|jpg|jpeg|png|psd|svg|webp)$": "<rootDir>/rn-image-transform.js",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },

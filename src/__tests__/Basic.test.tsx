@@ -21,7 +21,7 @@ describe("Counting nodes", () => {
           justifyContent: "center",
           alignItems: "center",
         }}>
-        <Image source={{testUri: './example.png'}} />
+        <Image source={require('./example.png')} />
         <Text>Hello folks</Text>
         <View style={{width: 50, height: 50, backgroundColor: "powderblue"}} />
         <Text style={{maxWidth: 100}}>
@@ -43,7 +43,7 @@ describe("Counting nodes", () => {
       expect(component).toMatchSnapshot()
       const fontCache = {fonts: {}, fallbacks: {}}
       console.log(__dirname)
-      const settings = {width: 320, height: 480, fontCache: fontCache, basePath: __dirname}
+      const settings = {width: 320, height: 480, fontCache: fontCache, basePath: __dirname + '/../../'}
       const node = layoutNode(component, settings)
       const svg = renderToSVG(node, settings)
       fs.writeFileSync(__dirname + '/Basic.test.svg', svg)
