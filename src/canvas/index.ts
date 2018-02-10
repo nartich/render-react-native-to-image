@@ -75,7 +75,6 @@ const renderRect = (ctx, layout, style) => {
   }
   const {top, left, width, height} = layout
   if (style.borderBottomWidth) {
-    console.log('doing it')
     ctx.lineWidth = style.borderBottomWidth
     ctx.strokeStyle = style.borderBottomColor || style.borderColor
     line(ctx, top + height, left, top + height, left + width);
@@ -111,7 +110,6 @@ const tintedImage = async (imagePath, tintColor) => {
   const ctx = canvas.getContext('2d')
   ctx.fillStyle = tintColor
   ctx.fillRect(0, 0, width, height)
-  console.error('WATTT', ctx.globalCompositeOperation)
   ctx.globalCompositeOperation = 'destination-in'
   ctx.drawImage(img, 0, 0)
   const tinted = new Image()
