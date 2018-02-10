@@ -26,7 +26,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
   if (!lines.length) return;
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   // TODO
-  const originX = 0; // width * textAligns[textAlign]
+  const originX = width * textAligns[textAlign]
 
   // TODO center text?
 
@@ -35,6 +35,35 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
     const { text, attributedStyles } = line
     const originY = y + lineBaseline(fontState, line) + (lineHeight(line) - lineFontSize(line)) / 2
     let x = left + originX
+
+    if (textAlign !== 'left') {
+      const width = attributedStyles.reduce((total, {start, end, style}) => {
+        const fontFamily = fontWithFallbacks(fontState, style);
+        // const fontWeight = style.fontWeight || 'normal';
+        // const fontStyle = style.fontStyle || 'normal';
+        const fontSize = style.fontSize || 12; /** TODO have a default? */
+        // console.log(style)
+
+        ctx.fillStyle = style.color;
+        // TODO bold
+        let font = `${style.fontSize}px ${fontFamily}`
+        if (style.fontWeight !== 'normal') {
+          font = `${style.fontWeight} ${font}`
+        }
+        if (style.fontStyle !== 'normal') {
+          font = `${style.fontStyle} ${font}`
+        }
+        ctx.font = font
+
+        return total + ctx.measureText(text.slice(start, end)).width
+      }, 0);
+      if (textAlign == 'center') {
+        x -= width / 2
+      } else if (textAlign == 'right') {
+        x -= width
+      }
+    }
+
     attributedStyles.forEach(({ start, end, style }, i) => {
       const fill = style.color;
       const fontFamily = fontWithFallbacks(fontState, style);
@@ -45,7 +74,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
 
       ctx.fillStyle = fill;
       // TODO bold
-      let font = `${style.fontSize}px ${style.fontFamily}`
+      let font = `${style.fontSize}px ${fontFamily}`
       if (style.fontWeight !== 'normal') {
         font = `${style.fontWeight} ${font}`
       }
