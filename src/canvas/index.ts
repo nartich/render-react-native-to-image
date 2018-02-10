@@ -120,7 +120,7 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
         img.src = await fetch(uri).then(response => response.buffer())
         ctx.drawImage(img, left, top, width, height)
       } else {
-        const fullPath = path.join(settings.basePath, uri)
+        const fullPath = uri.startsWith('/') ? uri : path.join(settings.basePath, uri)
         if (fs.existsSync(fullPath)) {
           const img = new Image()
           img.src = await prom(done => fs.readFile(fullPath, done));
