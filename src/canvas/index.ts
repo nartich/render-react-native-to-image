@@ -7,24 +7,97 @@ import * as path from 'path'
 import drawText from './drawText'
 import fetch from 'node-fetch'
 
-import * as Canvas from 'canvas-prebuilt'
+import {createCanvas, Image} from 'canvas'
 
 const getOpacity = node => {
   const {opacity = 1} = styleFromComponent(node)
   return opacity
 }
 
-const renderRect = (ctx, {left, top, width, height}, style) => {
+const roundedPath = (ctx, radius, {top, left, width, height}, stroke) => {
+  ctx.beginPath();
+  top += stroke / 2
+  left += stroke / 2
+  width -= stroke
+  height -= stroke
+  ctx.moveTo(left + radius.tl, top);
+  ctx.lineTo(left + width - radius.tr, top);
+  ctx.arcTo(left + width, top, left + width, top + radius.tr, radius.tr);
+
+  ctx.lineTo(left + width, top + height - radius.br);
+  ctx.arcTo(left + width, top + height, left + width - radius.br, top + height, radius.br);
+
+  ctx.lineTo(left + radius.bl, top + height);
+  ctx.arcTo(left, top + height, left, top + height - radius.bl, radius.bl);
+
+  ctx.lineTo(left, top + radius.tl);
+  ctx.arcTo(left, top, left + radius.tl, top, radius.tl);
+
+  ctx.closePath();
+}
+
+const radiusFromStyle = (style, width, height) => {
+  const all = style.borderRadius || 0
+  const mx = width / 2
+  const my = height / 2
+  const mm = Math.min(mx, my)
+  return {
+    tl: Math.min(mm, style.borderTopLeftRadius || all),
+    tr: Math.min(mm, style.borderTopRightRadius || all),
+    bl: Math.min(mm, style.borderBottomLeftRadius || all),
+    br: Math.min(mm, style.borderBottomRightRadius || all)
+  }
+}
+
+const line = (ctx, y0, x0, y1, x1) => {
+  ctx.beginPath()
+  ctx.moveTo(x0, y0)
+  ctx.lineTo(x1, y1)
+  ctx.stroke()
+}
+
+const renderRect = (ctx, layout, style) => {
+  const radius = radiusFromStyle(style, layout.width, layout.height)
   if (style.backgroundColor) {
     ctx.fillStyle = style.backgroundColor
-    ctx.fillRect(left, top, width, height)
-    ctx.fillStyle = 'transparent'
+    roundedPath(ctx, radius, layout, style.borderWidth ? style.borderWidth / 2 : 0)
+    ctx.fill()
+    // ctx.fillRect(left, top, width, height)
+    // ctx.fillStyle = 'transparent'
   }
   if (style.borderWidth) {
     ctx.strokeStyle = style.borderColor
     ctx.lineWidth = style.borderWidth
-    ctx.strokeRect(left, top, width, height)
+    roundedPath(ctx, radius, layout, style.borderWidth)
+    ctx.stroke()
+    // ctx.strokeRect(left, top, width, height)
     // TODO much more border stuff
+  }
+  const {top, left, width, height} = layout
+  if (style.borderBottomWidth) {
+    console.log('doing it')
+    ctx.lineWidth = style.borderBottomWidth
+    ctx.strokeStyle = style.borderBottomColor || style.borderColor
+    line(ctx, top + height, left, top + height, left + width);
+    ctx.stroke()
+  }
+  if (style.borderLeftWidth) {
+    ctx.lineWidth = style.borderLeftWidth
+    ctx.strokeStyle = style.borderLeftColor || style.borderColor
+    line(ctx, top, left, top + height, left);
+    ctx.stroke()
+  }
+  if (style.borderRightWidth) {
+    ctx.lineWidth = style.borderRightWidth
+    ctx.strokeStyle = style.borderRightColor || style.borderColor
+    line(ctx, top, left + width, top + height, left + width);
+    ctx.stroke()
+  }
+  if (style.borderTopWidth) {
+    ctx.lineWidth = style.borderTopWidth
+    ctx.strokeStyle = style.borderTopColor || style.borderColor
+    line(ctx, top, left, top, left + width);
+    ctx.stroke()
   }
 }
 
@@ -34,7 +107,6 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
   RCTScrollView: (ctx, settings, node) => renderers.View(ctx, settings, node),
   Image: async (ctx, settings, node) => {
     const style = styleFromComponent(node)
-    console.log('image', node.props.source)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       const uri = node.props.source.testUri || node.props.source.uri
       const opacity = getOpacity(node)
@@ -43,11 +115,11 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       const fullPath = uri
       const {top,left,width,height} = node.layout
       if (fullPath.match(/^https?:\/\//)) {
-        const img = new Canvas.Image()
+        const img = new Image()
         img.src = await fetch(fullPath).then(response => response.buffer())
         ctx.drawImage(img, left, top, width, height)
       } else if (fs.existsSync(fullPath)) {
-        const img = new Canvas.Image()
+        const img = new Image()
         img.src = await prom(done => fs.readFile(fullPath, done));
         ctx.drawImage(img, left, top, width, height)
       } else {
@@ -94,7 +166,7 @@ const renderNode = async (ctx, node: RenderedComponent, settings: Settings) => {
 };
 
 const renderToCanvas = async (dest: string, root: RenderedComponent, settings: Settings) => {
-  const canvas = new Canvas(settings.width, settings.height);
+  const canvas = createCanvas(settings.width, settings.height);
   const ctx = canvas.getContext('2d')
   await renderNode(ctx, root, settings);
   await prom(done => fs.writeFile(dest, canvas.toBuffer(), done))

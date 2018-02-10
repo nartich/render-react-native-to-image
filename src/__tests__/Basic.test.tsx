@@ -28,9 +28,13 @@ describe("Counting nodes", () => {
           Ok <Text style={{fontWeight: "bold"}}>here</Text> is something <Text style={{fontStyle: 'italic'}}>long that </Text>is going to wrap for me.
         </Text>
         <View style={{width: 50, height: 50, backgroundColor: "skyblue"}} />
-        <View style={{width: 50, height: 50, backgroundColor: "steelblue"}} />
-        <View style={{padding: 10, backgroundColor: 'green'}}>
-          <View style={{padding: 10, backgroundColor: 'blue'}}>
+        <View style={{width: 50, height: 50, backgroundColor: "steelblue",
+          borderBottomWidth: 10,
+          borderColor: 'yellow',
+          borderWidth: 2,
+        }} />
+        <View style={{padding: 10, backgroundColor: 'green', borderRadius: 10}}>
+          <View style={{padding: 10, backgroundColor: 'blue', borderRadius: 100, borderColor: 'orange', borderWidth: 2}}>
           </View>
         </View>
       </View>

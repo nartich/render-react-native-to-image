@@ -4,23 +4,23 @@
  <rect type="View" x="0.5" y="0.5" width="319" height="479" fill="none" stroke="red" stroke-width="1"/>
 
  <g transform='translate(0, 0)'>
-   <image xlink:href="./example.png" preserveAspectRatio="" x="136" y="76" width="48" height="48"/>
-   <text><tspan x="127" y="136.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Hello folks</tspan></text>
-   <rect type="View" x="135" y="142" width="50" height="50" fill="powderblue"/>
-   <text><tspan x="112" y="204.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Ok </tspan>
+   <image xlink:href="./example.png" preserveAspectRatio="" x="160" y="98" width="0" height="0"/>
+   <text><tspan x="127" y="110.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Hello folks</tspan></text>
+   <rect type="View" x="135" y="116" width="50" height="50" fill="powderblue"/>
+   <text><tspan x="112" y="178.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Ok </tspan>
 <tspan fill="black" font-family="'Helvetica'" font-weight="bold" font-style="normal" font-size="14">here</tspan>
 <tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14"> is</tspan>
-<tspan x="112" y="222.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">something </tspan>
+<tspan x="112" y="196.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">something </tspan>
 <tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="italic" font-size="14">long</tspan>
-<tspan x="112" y="240.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="italic" font-size="14">that </tspan>
+<tspan x="112" y="214.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="italic" font-size="14">that </tspan>
 <tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">is going to</tspan>
-<tspan x="112" y="258.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">wrap for me.</tspan></text>
-   <rect type="View" x="135" y="264" width="50" height="50" fill="skyblue"/>
-   <rect type="View" x="135" y="314" width="50" height="50" fill="steelblue"/>
-   <rect type="View" x="140" y="364" width="40" height="40" fill="green"/>
+<tspan x="112" y="232.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">wrap for me.</tspan></text>
+   <rect type="View" x="135" y="238" width="50" height="50" fill="skyblue"/>
+   <path type="View" fill="steelblue" d="M135,288L185,288A0,0 0 0,1 185,288L185,338A0,0 0 0,1 185,338L135,338A0,0 0 0,1 135,338L135,288A0,0 0 0,1 135,288Z"/><path fill="yellow" d="M135,288L185,288A0,0 0 0,1 185,288L185,338A0,0 0 0,1 185,338L135,338A0,0 0 0,1 135,338L135,288A0,0 0 0,1 135,288ZM135,288L135,338A0,0 0 0,0 135,338L185,338A0,0 0 0,0 185,338L185,288A0,0 0 0,0 185,288L135,288A0,0 0 0,0 135,288Z"/>
+   <rect type="View" x="138" y="338" width="44" height="44" fill="green" rx="10" ry="10"/>
 
-   <g transform='translate(140, 364)'>
-     <rect type="View" x="10" y="10" width="20" height="20" fill="blue"/>
+   <g transform='translate(138, 338)'>
+     <rect type="View" x="11" y="11" width="22" height="22" fill="blue" stroke="orange" stroke-width="2" rx="11" ry="11"/>
    </g>
 
  </g>

@@ -87,6 +87,9 @@ exports[`Counting nodes it is good with memory 1`] = `
     style={
       Object {
         "backgroundColor": "steelblue",
+        "borderBottomWidth": 10,
+        "borderColor": "yellow",
+        "borderWidth": 2,
         "height": 50,
         "width": 50,
       }
@@ -96,6 +99,7 @@ exports[`Counting nodes it is good with memory 1`] = `
     style={
       Object {
         "backgroundColor": "green",
+        "borderRadius": 10,
         "padding": 10,
       }
     }
@@ -104,6 +108,9 @@ exports[`Counting nodes it is good with memory 1`] = `
       style={
         Object {
           "backgroundColor": "blue",
+          "borderColor": "orange",
+          "borderRadius": 100,
+          "borderWidth": 2,
           "padding": 10,
         }
       }

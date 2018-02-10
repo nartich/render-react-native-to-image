@@ -3,9 +3,8 @@ import treeToSVG from "./svg/tree-to-svg"
 import treeToCanvas from "./canvas"
 import layoutRoot, {Component, Settings} from './layout/'
 
-const Canvas = require('canvas-prebuilt')
-console.log('CANVAS', Canvas, Canvas.registerFont)
-// export {registerCanvasFont}
+const {registerFont: registerCanvasFont} = require('canvas')
+export {registerCanvasFont}
 
 export {Component, Settings}
 

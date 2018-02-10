@@ -66,7 +66,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
 
     attributedStyles.forEach(({ start, end, style }, i) => {
       const fill = style.color;
-      const fontFamily = fontWithFallbacks(fontState, style);
+      const fontFamily = fontWithFallbacks(fontState, style.fontFamily);
       // const fontWeight = style.fontWeight || 'normal';
       // const fontStyle = style.fontStyle || 'normal';
       const fontSize = style.fontSize || 12; /** TODO have a default? */
@@ -81,6 +81,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
       if (style.fontStyle !== 'normal') {
         font = `${style.fontStyle} ${font}`
       }
+      // console.log('font here', text.slice(start,end), font)
       ctx.font = font
       ctx.fillText(text.slice(start, end), x, originY)
 
