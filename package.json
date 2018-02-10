@@ -30,7 +30,7 @@
   "scripts": {
     "type-check": "tsc --noEmit",
     "build": "tsc && cp src/external-api.d.ts build",
-    "test": "echo 'no tests haha'",
+    "test": "jest",
     "watch": "tsc --watch",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "prepush": "yarn build && yarn test"
@@ -55,12 +55,14 @@
     "testRegex": "(.test)\\.(ts|tsx)$",
     "testPathIgnorePatterns": [
       "\\.snap$",
+      "<rootDir>/jest",
       "<rootDir>/node_modules/"
     ],
     "cacheDirectory": ".jest/cache",
     "preset": "react-native"
   },
   "dependencies": {
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "font-manager": "^0.2.2",
     "fontkit": "^1.7.7",
     "image-size": "^0.6.2",

@@ -1,9 +1,7 @@
 import * as fs from "fs"
 import * as path from "path"
 
-import {renderToSVGString, Component} from 'render-react-to-svg'
-
-// toMatchSVGSnapshot(1024, 768)
+import {renderToSVGString, Component} from '../src/'
 
 const fail = (msg) => ({ message: () => msg, pass: false })
 
@@ -35,7 +33,7 @@ expect.extend({
             // We will need to do something smarter in the future, these snapshots need to be 1 file per test
             // whereas jest-snapshots can be multi-test per file.
 
-            const svgText = renderToSVGString(currentTest, root, fontState, width, height)
+            const svgText = renderToSVGString(root, {basePath: currentTest, fontCache: fontState, width, height})
 
             // TODO: Determine if Jest is in `-u`?
             // can be done via the private API

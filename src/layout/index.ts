@@ -30,7 +30,7 @@ export interface RenderedComponent {
 }
 
 export interface Settings {
-    basePath: null | string
+    basePath: string
     fontCache: FontCache
     width: number
     height: number

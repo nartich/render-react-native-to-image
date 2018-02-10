@@ -5,7 +5,7 @@ import textToSvg from "./text-to-svg"
 import { FontCache } from '../layout/'
 
 import { RenderedComponent, Settings } from "../layout/index"
-import wsp from "../whitespace"
+import wsp from "./whitespace"
 import renderRect from './rect'
 
 export const getOpacity = node => {
@@ -56,8 +56,8 @@ const svgForNode = (fontState: FontCache, node) => {
   }
 }
 
-const nodeToSVG = (fontState: FontCache, indent: number, node: RenderedComponent, settings: Settings) => {
-  const nodes: string[] = svgForNode(fontState, node)
+const nodeToSVG = (indent: number, node: RenderedComponent, settings: Settings) => {
+  const nodes: string[] = svgForNode(settings.fontCache, node)
   return nodes.map(text => "\n" + wsp(indent) + text).join("")
 }
 

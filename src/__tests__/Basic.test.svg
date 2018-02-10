@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="320" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+
+ <rect type="View" x="0.5" y="0.5" width="319" height="479" fill="none" stroke="red" stroke-width="1"/>
+
+ <g transform='translate(0, 0)'>
+   <image xlink:href="./example.png" preserveAspectRatio="" x="136" y="76" width="48" height="48"/>
+   <text><tspan x="127" y="136.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Hello folks</tspan></text>
+   <rect type="View" x="135" y="142" width="50" height="50" fill="powderblue"/>
+   <text><tspan x="112" y="204.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">Ok </tspan>
+<tspan fill="black" font-family="'Helvetica'" font-weight="bold" font-style="normal" font-size="14">here</tspan>
+<tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14"> is</tspan>
+<tspan x="112" y="222.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">something </tspan>
+<tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="italic" font-size="14">long</tspan>
+<tspan x="112" y="240.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="italic" font-size="14">that </tspan>
+<tspan fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">is going to</tspan>
+<tspan x="112" y="258.7802734375" fill="black" font-family="'Helvetica'" font-weight="normal" font-style="normal" font-size="14">wrap for me.</tspan></text>
+   <rect type="View" x="135" y="264" width="50" height="50" fill="skyblue"/>
+   <rect type="View" x="135" y="314" width="50" height="50" fill="steelblue"/>
+   <rect type="View" x="140" y="364" width="40" height="40" fill="green"/>
+
+   <g transform='translate(140, 364)'>
+     <rect type="View" x="10" y="10" width="20" height="20" fill="blue"/>
+   </g>
+
+ </g>
+
+</svg>

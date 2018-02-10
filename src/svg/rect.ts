@@ -3,7 +3,7 @@ import * as yoga from "yoga-layout"
 
 import { styleFromComponent } from "../layout/component-to-node"
 import { RenderedComponent } from "../layout/index"
-import wsp from "../whitespace"
+import wsp from "./whitespace"
 import {
   dashStyles,
   filledPathForSide,
