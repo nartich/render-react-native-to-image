@@ -23,8 +23,12 @@ const textAnchors = {
 }
 
 export default (ctx, fontState: FontCache, {left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): void => {
+  if (!lines.length) return;
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
-  const originX = width * textAligns[textAlign]
+  // TODO
+  const originX = 0; // width * textAligns[textAlign]
+
+  // TODO center text?
 
   let y = top;
   lines.forEach(line => {
@@ -37,7 +41,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
       // const fontWeight = style.fontWeight || 'normal';
       // const fontStyle = style.fontStyle || 'normal';
       const fontSize = style.fontSize || 12; /** TODO have a default? */
-      console.log(style)
+      // console.log(style)
 
       ctx.fillStyle = fill;
       // TODO bold

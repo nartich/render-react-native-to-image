@@ -3,6 +3,7 @@ import extractText from "./extract-text"
 import { Component, Settings } from "./"
 import { breakLines, measureLines } from "./text-layout"
 import { FontCache } from './'
+import * as fs from 'fs'
 
 export const textLines = Symbol("textLines")
 
@@ -12,9 +13,13 @@ const getImageSize = (basePath: string, uri: string) => {
   const path = require("path")
   const getSize = require("image-size")
 
-  const fullPath = path.join(basePath, uri)
-  console.log("Want to find the dimensions for this thing", fullPath)
-  return getSize(fullPath)
+  const fullPath = uri // path.join(basePath, uri)
+  // console.log("Want to find the dimensions for this thing", fullPath)
+  if (fs.existsSync(fullPath)) {
+    return getSize(fullPath)
+  } else {
+    return {width: undefined, height: undefined}
+  }
 }
 
 const componentToNode = (component: Component, settings: Settings, parentStyleOverrides: null | any): yoga.NodeInstance => {
@@ -23,9 +28,9 @@ const componentToNode = (component: Component, settings: Settings, parentStyleOv
   let hasStyle = parentStyleOverrides || (component.props && component.props.style)
   const style = {...parentStyleOverrides, ...(hasStyle ? styleFromComponent(component) : {})}
 
-  if (component.type === 'Image') {
-    console.log(component)
-  }
+  // if (component.type === 'Image') {
+    // console.log(component)
+  // }
   if (component.type === "Image" && component.props.source && component.props.source.testUri) {
     if (style.width == null || style.height == null) {
       if (settings.basePath == null) {

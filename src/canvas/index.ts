@@ -36,10 +36,26 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       const opacity = getOpacity(node)
       // TODO
       // node.props.resizeMode === "cover"
-      const img = new Canvas.Image()
-      img.src = fs.readFileSync(path.join(settings.basePath || '', uri))
+      const fullPath = uri
       const {top,left,width,height} = node.layout
-      ctx.drawImage(img, left, top, width, height)
+      if (fs.existsSync(fullPath)) {
+        const img = new Canvas.Image()
+        img.src = fs.readFileSync(fullPath)
+        ctx.drawImage(img, left, top, width, height)
+      } else {
+        ctx.fillStyle = '#aaa'
+        ctx.fillRect(left, top, width, height)
+        ctx.strokeStyle = '#888'
+        ctx.strokeRect(left, top, width, height)
+        ctx.beginPath()
+        ctx.moveTo(left, top)
+        ctx.lineTo(left + width, top + height)
+        ctx.stroke()
+        ctx.beginPath()
+        ctx.moveTo(left + width, top)
+        ctx.lineTo(left, top + height)
+        ctx.stroke()
+      }
     } else {
       renderers.View(ctx, settings, node)
     }
