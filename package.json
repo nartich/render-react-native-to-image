@@ -68,6 +68,7 @@
     "image-size": "^0.6.2",
     "linebreak": "^0.3.0",
     "nbind": "^0.3.12",
+    "node-fetch": "^2.0.0",
     "yoga-layout": "^1.5.0"
   }
 }

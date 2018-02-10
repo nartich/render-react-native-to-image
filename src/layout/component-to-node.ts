@@ -28,9 +28,6 @@ const componentToNode = (component: Component, settings: Settings, parentStyleOv
   let hasStyle = parentStyleOverrides || (component.props && component.props.style)
   const style = {...parentStyleOverrides, ...(hasStyle ? styleFromComponent(component) : {})}
 
-  // if (component.type === 'Image') {
-    // console.log(component)
-  // }
   if (component.type === "Image" && component.props.source && component.props.source.testUri) {
     if (style.width == null || style.height == null) {
       if (settings.basePath == null) {

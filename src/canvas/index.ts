@@ -5,6 +5,7 @@ import { FontCache } from '../layout'
 import * as fs from 'fs'
 import * as path from 'path'
 import drawText from './drawText'
+import fetch from 'node-fetch'
 
 import * as Canvas from 'canvas-prebuilt'
 
@@ -27,10 +28,13 @@ const renderRect = (ctx, {left, top, width, height}, style) => {
   }
 }
 
-const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedComponent) => void} = {
+const prom = fn => new Promise((res, rej) => fn((err, val) => err ? rej(err) : res(val)));
+
+const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedComponent) => Promise<void>} = {
   RCTScrollView: (ctx, settings, node) => renderers.View(ctx, settings, node),
-  Image: (ctx, settings, node) => {
+  Image: async (ctx, settings, node) => {
     const style = styleFromComponent(node)
+    console.log('image', node.props.source)
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       const uri = node.props.source.testUri || node.props.source.uri
       const opacity = getOpacity(node)
@@ -38,9 +42,13 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       // node.props.resizeMode === "cover"
       const fullPath = uri
       const {top,left,width,height} = node.layout
-      if (fs.existsSync(fullPath)) {
+      if (fullPath.match(/^https?:\/\//)) {
         const img = new Canvas.Image()
-        img.src = fs.readFileSync(fullPath)
+        img.src = await fetch(fullPath).then(response => response.buffer())
+        ctx.drawImage(img, left, top, width, height)
+      } else if (fs.existsSync(fullPath)) {
+        const img = new Canvas.Image()
+        img.src = await prom(done => fs.readFile(fullPath, done));
         ctx.drawImage(img, left, top, width, height)
       } else {
         ctx.fillStyle = '#aaa'
@@ -57,40 +65,39 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
         ctx.stroke()
       }
     } else {
-      renderers.View(ctx, settings, node)
+      await renderers.View(ctx, settings, node)
     }
   },
-  Text: (ctx, settings, node) => {
+  Text: async (ctx, settings, node) => {
     drawText(ctx, settings.fontCache, node.layout, styleFromComponent(node), node[textLines])
   },
-  View: (ctx, settings, node) => {
-      const style = styleFromComponent(node)
-      renderRect(ctx, node.layout, styleFromComponent(node))
+  View: async (ctx, settings, node) => {
+    const style = styleFromComponent(node)
+    renderRect(ctx, node.layout, styleFromComponent(node))
   }
 }
 
-const renderNode = (ctx, node: RenderedComponent, settings: Settings) => {
+const renderNode = async (ctx, node: RenderedComponent, settings: Settings) => {
   if (!renderers[node.type]) {
-    console.log("unexpected node type", node.type)
-    renderers.View(ctx, settings, node)
+    await renderers.View(ctx, settings, node)
   } else {
-    renderers[node.type](ctx, settings, node)
+    await renderers[node.type](ctx, settings, node)
   }
   if (node.children) {
     ctx.save()
     ctx.translate(node.layout.left, node.layout.top)
-    node.children.forEach(child => {
-      renderNode(ctx, child, settings)
-    })
+    for (let child of node.children) {
+      await renderNode(ctx, child, settings)
+    }
     ctx.restore()
   }
 };
 
-const renderToCanvas = (dest: string, root: RenderedComponent, settings: Settings) => {
+const renderToCanvas = async (dest: string, root: RenderedComponent, settings: Settings) => {
   const canvas = new Canvas(settings.width, settings.height);
   const ctx = canvas.getContext('2d')
-  renderNode(ctx, root, settings);
-  fs.writeFileSync(dest, canvas.toBuffer())
+  await renderNode(ctx, root, settings);
+  await prom(done => fs.writeFile(dest, canvas.toBuffer(), done))
 }
 
 export default renderToCanvas
