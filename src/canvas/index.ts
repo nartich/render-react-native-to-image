@@ -110,7 +110,6 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
     if (node.props.source && (node.props.source.testUri || node.props.source.uri)) {
       let uri = node.props.source.testUri || node.props.source.uri
       uri = settings.assetMap[uri] || uri
-      console.log(uri)
 
       const opacity = getOpacity(node)
       // TODO
@@ -121,13 +120,13 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
         img.src = await fetch(uri).then(response => response.buffer())
         ctx.drawImage(img, left, top, width, height)
       } else {
-
         const fullPath = path.join(settings.basePath, uri)
         if (fs.existsSync(fullPath)) {
           const img = new Image()
           img.src = await prom(done => fs.readFile(fullPath, done));
           ctx.drawImage(img, left, top, width, height)
         } else {
+          console.warn('Referenced image not found:', uri)
           ctx.fillStyle = '#aaa'
           ctx.fillRect(left, top, width, height)
           ctx.strokeStyle = '#888'
@@ -140,6 +139,11 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
           ctx.moveTo(left + width, top)
           ctx.lineTo(left, top + height)
           ctx.stroke()
+          ctx.font = '10px sans-serif'
+          ctx.fillStyle = 'white'
+          ctx.fillText(uri, left + 1, top + 11)
+          ctx.fillStyle = 'black'
+          ctx.fillText(uri, left, top + 10)
         }
       }
     } else {
