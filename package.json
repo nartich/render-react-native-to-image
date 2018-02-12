@@ -31,8 +31,7 @@
     "build": "tsc",
     "test": "jest",
     "watch": "tsc --watch",
-    "lint": "tslint 'src/**/*.{ts,tsx}'",
-    "prepush": "yarn build && yarn test"
+    "lint": "tslint 'src/**/*.{ts,tsx}'"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
