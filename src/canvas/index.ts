@@ -142,7 +142,8 @@ const renderers: {[key: string]: (ctx, settings: Settings, node: RenderedCompone
       } else {
         const fullPath = uri.startsWith('/') ? uri : path.join(settings.basePath, uri)
         if (fs.existsSync(fullPath)) {
-          const img = await (style.tintColor ? tintedImage(fullPath, style.tintColor) : getImage(fullPath))
+          const tintColor = style.tintColor || node.props.tintColor;
+          const img = await (tintColor ? tintedImage(fullPath, tintColor) : getImage(fullPath))
           // img.src = await prom(done => fs.readFile(fullPath, done));
           ctx.drawImage(img, left, top, width, height)
         } else {
