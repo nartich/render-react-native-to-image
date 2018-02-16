@@ -2,7 +2,6 @@
 const path = require('path');
 const createCacheKeyFunction = require('fbjs-scripts/jest/createCacheKeyFunction');
 
-console.log('AAAAA')
 module.exports = {
   // Mocks asset requires to return the filename. Makes it possible to test that
   // the correct images are loaded for components. Essentially

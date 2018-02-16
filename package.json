@@ -65,7 +65,7 @@
     "preset": "react-native"
   },
   "dependencies": {
-    "canvas": "^2.0.0-alpha.9",
+    "canvas-prebuilt": "^2.0.0-alpha.5",
     "font-manager": "^0.2.2",
     "fontkit": "^1.7.7",
     "image-size": "^0.6.2",
