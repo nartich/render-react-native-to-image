@@ -10,7 +10,7 @@ import * as renderer from "react-test-renderer"
 import * as fs from 'fs'
 
 describe("Counting nodes", () => {
-    it("it is good with memory", () => {
+    it("it is good with memory", async () => {
 
       const jsx =
         <View style={{
@@ -22,6 +22,7 @@ describe("Counting nodes", () => {
           alignItems: "center",
         }}>
         <Image source={require('./example.png')} />
+        <Image source={require('./example.png')} style={{tintColor: 'red'}} />
         <Text>Hello folks</Text>
         <View style={{width: 50, height: 50, backgroundColor: "powderblue"}} />
         <Text style={{maxWidth: 100}}>
@@ -52,7 +53,7 @@ describe("Counting nodes", () => {
       const node = layoutNode(component, settings)
       const svg = renderToSVG(node, settings)
       fs.writeFileSync(__dirname + '/Basic.test.svg', svg)
-      renderToCanvas(__dirname + '/Basic.test.png', node, settings)
+      await renderToCanvas(__dirname + '/Basic.test.png', node, settings)
       // expect(component).toMatchSVGSnapshot(320, 480)
     })
 })
