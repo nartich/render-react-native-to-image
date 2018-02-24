@@ -7,7 +7,7 @@ import * as path from 'path'
 import drawText from './drawText'
 import fetch from 'node-fetch'
 
-import {createCanvas, Image} from 'canvas-prebuilt'
+import {createCanvas, Image} from 'canvas-prebuilt/canvas'
 
 const getOpacity = node => {
   const {opacity = 1} = styleFromComponent(node)
