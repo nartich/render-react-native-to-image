@@ -32,11 +32,7 @@ exports[`Counting nodes it is good with memory 1`] = `
       }
     }
   />
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-  >
+  <Text>
     Hello folks
   </Text>
   <View
@@ -49,9 +45,6 @@ exports[`Counting nodes it is good with memory 1`] = `
     }
   />
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     style={
       Object {
         "maxWidth": 100,
@@ -60,9 +53,6 @@ exports[`Counting nodes it is good with memory 1`] = `
   >
     Ok 
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "fontWeight": "bold",
@@ -73,9 +63,6 @@ exports[`Counting nodes it is good with memory 1`] = `
     </Text>
      is something 
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "fontStyle": "italic",

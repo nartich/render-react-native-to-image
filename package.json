@@ -9,24 +9,6 @@
   ],
   "author": "Orta Therox <orta.therox@gmail.com> & Art.sy Inc & Jared Forsyth <jared@jaredforsyth.com>",
   "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "^20.0.8",
-    "@types/node": "^7.0.31",
-    "babel-cli": "^6.24.1",
-    "babel-jest": "^20.0.3",
-    "danger": "^0.18.0",
-    "husky": "^0.13.3",
-    "jest": "^21.0.1",
-    "lint-staged": "^3.2.5",
-    "prop-types": "^15.5.10",
-    "react": "16.0.0-alpha.6",
-    "react-native": "^0.44.0",
-    "react-test-renderer": "^15.5.4",
-    "ts-jest": "^21.0.0",
-    "ts-node": "^3.0.0",
-    "tslint": "^5.2.0",
-    "typescript": "^2.3.2"
-  },
   "scripts": {
     "type-check": "tsc --noEmit",
     "build": "tsc",
@@ -54,8 +36,8 @@
     },
     "transform": {
       "\\.(bmp|gif|jpg|jpeg|png|psd|svg|webp)$": "<rootDir>/rn-image-transform.js",
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
+      ".(ts|tsx)": "ts-jest"
     },
     "testRegex": "(.test)\\.(ts|tsx)$",
     "testPathIgnorePatterns": [
@@ -75,5 +57,25 @@
     "nbind": "^0.3.12",
     "node-fetch": "^2.0.0",
     "yoga-layout": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.9.4",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^23.4.2",
+    "danger": "^3.8.8",
+    "husky": "^0.13.3",
+    "jest": "^23.5.0",
+    "lint-staged": "^3.2.5",
+    "prop-types": "^15.6.2",
+    "react": "16.4.1",
+    "react-native": "^0.57.0-rc.3",
+    "react-test-renderer": "^16.4.1",
+    "ts-jest": "^23.1.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
   }
 }
