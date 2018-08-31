@@ -1,5 +1,10 @@
 ### Master
 
+### 0.1.6
+
+- Upgrade react to 16.4.1, react-native to 0.57-rc.3
+- Add Prettier formatting
+- Package rn-image-transform so projects can use it
 
 ### 0.0.24
 
