@@ -4,7 +4,8 @@
   "description": "Generate an SVG or PNG image of a React Native Component Tree",
   "main": "build/index.js",
   "files": [
-    "build/*"
+    "build/*",
+    "rn-image-transform.js"
   ],
   "author": "Orta Therox <orta.therox@gmail.com> & Art.sy Inc & Jared Forsyth <jared@jaredforsyth.com>",
   "license": "MIT",
