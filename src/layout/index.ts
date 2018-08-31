@@ -17,7 +17,7 @@ export interface Component {
 export interface RenderedComponent {
     type: string
     props: any
-    textContent: string | undefined
+    textContent?: string
     children: RenderedComponent[]
     layout: {
         left: number
