@@ -31,8 +31,8 @@
     "build": "tsc",
     "test": "jest",
     "watch": "tsc --watch",
-    "prepublish": "npm run build",
-    "lint": "tslint 'src/**/*.{ts,tsx}'"
+    "lint": "tslint '{src,jest}/**/*.{ts,tsx}'",
+    "prepack": "npm run build"
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
