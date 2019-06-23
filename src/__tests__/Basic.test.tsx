@@ -18,16 +18,19 @@ describe("Counting nodes", () => {
           borderColor: "red",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Image source={require("./example.png")} />
         <Image source={require("./example.png")} style={{ tintColor: "red" }} />
         <Text>Hello folks</Text>
-        <View style={{ width: 50, height: 50, backgroundColor: "powderblue" }} />
+        <View
+          style={{ width: 50, height: 50, backgroundColor: "powderblue" }}
+        />
         <Text style={{ maxWidth: 100 }}>
           Ok <Text style={{ fontWeight: "bold" }}>here</Text> is something{" "}
-          <Text style={{ fontStyle: "italic" }}>long that </Text>is going to wrap for me.
+          <Text style={{ fontStyle: "italic" }}>long that </Text>is going to
+          wrap for me.
         </Text>
         <View style={{ width: 50, height: 50, backgroundColor: "skyblue" }} />
         <View
@@ -37,12 +40,20 @@ describe("Counting nodes", () => {
             backgroundColor: "steelblue",
             borderBottomWidth: 10,
             borderColor: "yellow",
-            borderWidth: 2
+            borderWidth: 2,
           }}
         />
-        <View style={{ padding: 10, backgroundColor: "green", borderRadius: 10 }}>
+        <View
+          style={{ padding: 10, backgroundColor: "green", borderRadius: 10 }}
+        >
           <View
-            style={{ padding: 10, backgroundColor: "blue", borderRadius: 100, borderColor: "orange", borderWidth: 2 }}
+            style={{
+              padding: 10,
+              backgroundColor: "blue",
+              borderRadius: 100,
+              borderColor: "orange",
+              borderWidth: 2,
+            }}
           />
         </View>
       </View>
@@ -62,7 +73,7 @@ describe("Counting nodes", () => {
       height: 480,
       fontCache,
       basePath: __dirname + "/../../",
-      renderPath: __dirname
+      renderPath: __dirname,
     }
     const node = layoutNode(component, settings)
     const svg = renderToSVG(node, settings)

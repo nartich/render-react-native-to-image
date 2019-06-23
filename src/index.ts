@@ -14,10 +14,13 @@ const defaultSettings = {
   fontCache: { fonts: {}, fallbacks: {} },
   basePath: "./",
   renderPath: "./",
-  assetMap: {}
+  assetMap: {},
 }
 
-export const renderToSVGString = (root: renderer.ReactTestRendererJSON, settings: Settings = defaultSettings) => {
+export const renderToSVGString = (
+  root: renderer.ReactTestRendererJSON,
+  settings: Settings = defaultSettings
+) => {
   if (!settings.fontCache) {
     throw new Error("No font cache provided")
   }

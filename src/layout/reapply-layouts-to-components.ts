@@ -5,11 +5,17 @@ import { textLines } from "./component-to-node"
 import * as renderer from "react-test-renderer"
 import { RenderedComponent } from "./index"
 
-const renderedComponentTree = (root: renderer.ReactTestRendererJSON, node: yoga.NodeInstance) => recurseTree(root, node)
+const renderedComponentTree = (
+  root: renderer.ReactTestRendererJSON,
+  node: yoga.NodeInstance
+) => recurseTree(root, node)
 
 export default renderedComponentTree
 
-export const recurseTree = (component: renderer.ReactTestRendererJSON, node: yoga.NodeInstance) => {
+export const recurseTree = (
+  component: renderer.ReactTestRendererJSON,
+  node: yoga.NodeInstance
+) => {
   const newChildren = [] as RenderedComponent[]
 
   // Don't go into Text nodes
@@ -36,7 +42,7 @@ export const recurseTree = (component: renderer.ReactTestRendererJSON, node: yog
       top: node.getComputedTop(),
       bottom: node.getComputedBottom(),
       width: node.getComputedWidth(),
-      height: node.getComputedHeight()
-    }
+      height: node.getComputedHeight(),
+    },
   } as RenderedComponent
 }

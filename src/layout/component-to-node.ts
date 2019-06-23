@@ -8,7 +8,7 @@ import { breakLines, measureLines } from "./text-layout"
 
 export const textLines = Symbol("textLines")
 
-const isNotEmpty = prop => typeof prop !== "undefined" && prop !== null
+const isNotEmpty = (prop) => typeof prop !== "undefined" && prop !== null
 
 const getImageSize = (basePath: string, uri: string) => {
   const path = require("path")
@@ -30,12 +30,23 @@ const componentToNode = <T>(
 ): yoga.NodeInstance => {
   // Do we need to pass in the parent node too?
   const node = yoga.Node.create()
-  let hasStyle = parentStyleOverrides || (component.props && component.props.style)
-  const style = { ...parentStyleOverrides, ...(hasStyle ? styleFromComponent(component) : {}) }
+  let hasStyle =
+    parentStyleOverrides || (component.props && component.props.style)
+  const style = {
+    ...parentStyleOverrides,
+    ...(hasStyle ? styleFromComponent(component) : {}),
+  }
 
-  if (component.type === "Image" && component.props.source && component.props.source.testUri) {
+  if (
+    component.type === "Image" &&
+    component.props.source &&
+    component.props.source.testUri
+  ) {
     if (style.width == null || style.height == null) {
-      const { width, height } = getImageSize(settings.basePath, component.props.source.testUri)
+      const { width, height } = getImageSize(
+        settings.basePath,
+        component.props.source.testUri
+      )
       if (style.width == null) {
         style.width = width
       }
@@ -253,7 +264,7 @@ const componentToNode = <T>(
   if (component && component.type === "Text") {
     const styledText = extractText(component)
     component[textLines] = null
-    node.setMeasureFunc(width => {
+    node.setMeasureFunc((width) => {
       const lines = breakLines(settings.fontCache, styledText, width)
       component[textLines] = lines
       return measureLines(settings.fontCache, lines)
@@ -263,14 +274,16 @@ const componentToNode = <T>(
   return node
 }
 
-export const styleFromComponent = (component: renderer.ReactTestRendererJSON) => {
+export const styleFromComponent = (
+  component: renderer.ReactTestRendererJSON
+) => {
   let style = component.props.style || {}
 
   if (Array.isArray(style)) {
     // The Stylesheet object allows some serious nesting of styles
     const flattened = Array.prototype.concat.apply([], style)
     const themeFlattened = Array.prototype.concat.apply([], flattened) as any[]
-    const objectsOnly = themeFlattened.filter(f => f)
+    const objectsOnly = themeFlattened.filter((f) => f)
     style = Object.assign({}, ...objectsOnly)
   }
 

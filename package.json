@@ -70,6 +70,7 @@
     "husky": "^2.4.1",
     "jest": "^24.8.0",
     "lint-staged": "^3.2.5",
+    "prettier": "^1.18.2",
     "prop-types": "^15.6.2",
     "react": "16.8.3",
     "react-native": "^0.59.9",
@@ -77,6 +78,8 @@
     "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
     "typescript": "^3.4.5"
   }
 }

@@ -1,7 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import nodeToSVG from "../svg/node-to-svg"
-import {fontState} from '../font-loader'
+import { fontState } from "../font-loader"
 
 const component = (name) => ({
   type: name,
@@ -14,20 +14,20 @@ const component = (name) => ({
     top: 0,
     bottom: 100,
     width: 600,
-    height: 400
-  }
+    height: 400,
+  },
 })
 
 describe("nodeToSVG", () => {
-    it("handles a simple square", () => {
-      const rootNode = component("my component")
+  it("handles a simple square", () => {
+    const rootNode = component("my component")
 
-      const settings = {
-        width: 1024,
-        height: 768,
-      }
+    const settings = {
+      width: 1024,
+      height: 768,
+    }
 
-      const results = nodeToSVG(fontState, 0, rootNode, settings)
-      expect(results).toMatchSnapshot()
-    })
+    const results = nodeToSVG(fontState, 0, rootNode, settings)
+    expect(results).toMatchSnapshot()
+  })
 })

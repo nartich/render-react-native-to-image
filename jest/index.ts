@@ -4,7 +4,7 @@ import * as path from "path"
 import * as renderer from "react-test-renderer"
 import { renderToSVGString } from "../src/"
 
-const fail = msg => ({ message: () => msg, pass: false })
+const fail = (msg) => ({ message: () => msg, pass: false })
 
 export { addFontFallback, loadFont } from "./font-loader"
 
@@ -35,7 +35,10 @@ expect.extend({
 
     //  Figure out the paths
     const snapshotsDir = path.join(currentTest, "..", "__snapshots__")
-    const expectedSnapshot = path.join(snapshotsDir, path.basename(currentTest) + "-" + testFile + ".svg")
+    const expectedSnapshot = path.join(
+      snapshotsDir,
+      path.basename(currentTest) + "-" + testFile + ".svg"
+    )
 
     // Make our folder if it's needed
     if (!fs.existsSync(snapshotsDir)) {
@@ -45,7 +48,12 @@ expect.extend({
     // We will need to do something smarter in the future, these snapshots need to be 1 file per test
     // whereas jest-snapshots can be multi-test per file.
 
-    const svgText = renderToSVGString(root, { basePath: currentTest, fontCache: fontState, width, height })
+    const svgText = renderToSVGString(root, {
+      basePath: currentTest,
+      fontCache: fontState,
+      width,
+      height,
+    })
 
     // TODO: Determine if Jest is in `-u`?
     // can be done via the private API
@@ -56,17 +64,20 @@ expect.extend({
       fs.writeFileSync(expectedSnapshot, svgText)
       return {
         message: () => "Created a new Snapshot for you",
-        pass: false
+        pass: false,
       }
     } else {
       const contents = fs.readFileSync(expectedSnapshot, "utf8")
       if (contents !== svgText) {
         fs.writeFileSync(expectedSnapshot, svgText)
-        return { message: () => `SVG Snapshot failed: we have updated it for you`, pass: false }
+        return {
+          message: () => `SVG Snapshot failed: we have updated it for you`,
+          pass: false,
+        }
       } else {
         return { message: () => "All good", pass: true }
       }
     }
-  }
+  },
 } as any)
 // }
