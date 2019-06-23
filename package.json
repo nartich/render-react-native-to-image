@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "canvas": "2.0.0-alpha.9",
-    "font-manager": "^0.2.2",
+    "fontmanager-redux": "^0.3.2",
     "fontkit": "^1.7.7",
     "image-size": "^0.6.2",
     "linebreak": "^0.3.0",

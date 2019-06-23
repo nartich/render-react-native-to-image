@@ -283,7 +283,7 @@ declare module "yoga-layout" {
   function getInstanceCount(): number
 }
 
-declare module "font-manager" {
+declare module "fontmanager-redux" {
   function findFontSync(style: any): { path: string } | null
 }
 
