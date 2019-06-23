@@ -61,7 +61,8 @@ exports[`Counting nodes it is good with memory 1`] = `
     >
       here
     </Text>
-     is something 
+     is something
+     
     <Text
       style={
         Object {

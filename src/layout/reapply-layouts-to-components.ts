@@ -1,15 +1,15 @@
-import {ViewStyle} from "react-native"
+import { ViewStyle } from "react-native"
 import * as yoga from "yoga-layout"
 import { textLines } from "./component-to-node"
 
-import { Component, RenderedComponent } from "./index"
+import * as renderer from "react-test-renderer"
+import { RenderedComponent } from "./index"
 
-const renderedComponentTree = (root: Component, node: yoga.NodeInstance) => recurseTree(root, node)
+const renderedComponentTree = (root: renderer.ReactTestRendererJSON, node: yoga.NodeInstance) => recurseTree(root, node)
 
 export default renderedComponentTree
 
-export const recurseTree = (component: Component, node: yoga.NodeInstance) => {
-
+export const recurseTree = (component: renderer.ReactTestRendererJSON, node: yoga.NodeInstance) => {
   const newChildren = [] as RenderedComponent[]
 
   // Don't go into Text nodes
@@ -30,7 +30,7 @@ export const recurseTree = (component: Component, node: yoga.NodeInstance) => {
     props: component.props,
     children: newChildren,
     [textLines]: component[textLines],
-    layout : {
+    layout: {
       left: node.getComputedLeft(),
       right: node.getComputedRight(),
       top: node.getComputedTop(),

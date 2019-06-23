@@ -1,27 +1,38 @@
-
-import treeToSVG from "./svg/tree-to-svg"
 import treeToCanvas from "./canvas"
-import layoutRoot, {Component, Settings} from './layout/'
+import layoutRoot, { Settings } from "./layout/"
+import treeToSVG from "./svg/tree-to-svg"
 
-const {registerFont: registerCanvasFont} = require('canvas')
-export {registerCanvasFont}
+const { registerFont: registerCanvasFont } = require("canvas")
+export { registerCanvasFont }
+import * as renderer from "react-test-renderer"
 
-export {Component, Settings}
+export { Settings }
 
-const defaultSettings = {width: 500, height: 500, fontCache: {fonts: {}, fallbacks: {}}, basePath: "./", renderPath: './', assetMap: {}}
-
-export const renderToSVGString = (root: Component, settings: Settings = defaultSettings) => {
-    if (!settings.fontCache)  {
-        throw new Error('No font cache provided')
-    }
-    return treeToSVG(layoutRoot(root, settings), settings)
+const defaultSettings = {
+  width: 500,
+  height: 500,
+  fontCache: { fonts: {}, fallbacks: {} },
+  basePath: "./",
+  renderPath: "./",
+  assetMap: {}
 }
 
-export const renderToCanvas = async (dest: string, root: Component, settings: Settings = defaultSettings) => {
-    if (!settings.fontCache)  {
-        throw new Error('No font cache provided')
-    }
-    await treeToCanvas(dest, layoutRoot(root, settings), settings)
+export const renderToSVGString = (root: renderer.ReactTestRendererJSON, settings: Settings = defaultSettings) => {
+  if (!settings.fontCache) {
+    throw new Error("No font cache provided")
+  }
+  return treeToSVG(layoutRoot(root, settings), settings)
 }
 
-export {initFontCache, loadFont, addFontFallback} from './layout/font-utils'
+export const renderToCanvas = async (
+  dest: string,
+  root: renderer.ReactTestRendererJSON,
+  settings: Settings = defaultSettings
+) => {
+  if (!settings.fontCache) {
+    throw new Error("No font cache provided")
+  }
+  await treeToCanvas(dest, layoutRoot(root, settings), settings)
+}
+
+export { initFontCache, loadFont, addFontFallback } from "./layout/font-utils"

@@ -1,19 +1,25 @@
 import * as yoga from "yoga-layout"
 
+import * as renderer from "react-test-renderer"
+import { FontCache } from "./"
 import componentToNode from "./component-to-node"
-import { Component, Settings } from "./index"
-import { FontCache } from './'
+import { Settings } from "./index"
 
-const treeToNodes = (root: Component, settings: Settings) => recurseTree(root, settings, null)
+const treeToNodes = (root: renderer.ReactTestRendererJSON, settings: Settings) => recurseTree(root, settings, null)
 
 export default treeToNodes
 
-export const recurseTree = (component: Component, settings: Settings, parentStyleOverrides: null | any) => {
+export const recurseTree = (
+  component: renderer.ReactTestRendererJSON,
+  settings: Settings,
+  parentStyleOverrides: null | any
+) => {
   const node = componentToNode(component, settings, parentStyleOverrides)
 
   // Don't go into Text nodes
   if (component.type !== "Text" && component.children) {
-    const styleOverrides = component.type === "RCTScrollView" ? {flex: 1, ...component.props.contentContainerStyle} : null
+    const styleOverrides =
+      component.type === "RCTScrollView" ? { flex: 1, ...component.props.contentContainerStyle } : null
     for (let index = 0; index < component.children.length; index++) {
       const childComponent = component.children[index]
       if (typeof childComponent === "string") {
