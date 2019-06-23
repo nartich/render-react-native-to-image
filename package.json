@@ -49,14 +49,14 @@
     "preset": "react-native"
   },
   "dependencies": {
-    "canvas": "2.0.0-alpha.9",
-    "fontkit": "^1.7.7",
+    "canvas": "2.5.0",
+    "fontkit": "^1.8.0",
     "fontmanager-redux": "^0.3.2",
-    "image-size": "^0.6.2",
-    "linebreak": "^0.3.0",
-    "nbind": "^0.3.12",
-    "node-fetch": "^2.0.0",
-    "yoga-layout": "^1.5.0"
+    "image-size": "^0.7.4",
+    "linebreak": "^1.0.2",
+    "nbind": "^0.3.15",
+    "node-fetch": "^2.6.0",
+    "yoga-layout": "^1.9.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

@@ -6,7 +6,8 @@ import { FontCache } from "../layout"
 import { styleFromComponent, textLines } from "../layout/component-to-node"
 import drawText from "./drawText"
 
-import { createCanvas, Image } from "canvas"
+import { createCanvas, Image as CanvasImage } from "canvas"
+import { Canvas } from "canvas/types"
 
 const getOpacity = (node) => {
   const { opacity = 1 } = styleFromComponent(node)
@@ -123,14 +124,14 @@ const tintedImage = async (imagePath, tintColor) => {
   ctx.fillRect(0, 0, width, height)
   ctx.globalCompositeOperation = "destination-in"
   ctx.drawImage(img, 0, 0)
-  const tinted = new Image()
+  const tinted = new CanvasImage()
   tinted.src = canvas.toBuffer()
   return tinted
 }
 
 const getImage = async (imagePath) => {
-  const img = new Image()
-  img.src = await prom((done) => fs.readFile(imagePath, done))
+  const img = new CanvasImage()
+  img.src = await fs.promises.readFile(imagePath)
   return img
 }
 
