@@ -8,63 +8,82 @@ import * as renderer from "react-test-renderer"
 
 import { addFontFallback, loadFont, initFontCache } from "../../index"
 
-const cache = initFontCache();
-loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Regular.ttf")))
-loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Bold.ttf")))
-loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Italic.ttf")))
-loadFont(cache, fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-BoldItalic.ttf")))
+const cache = initFontCache()
+loadFont(
+  cache,
+  fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Regular.ttf"))
+)
+loadFont(
+  cache,
+  fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Bold.ttf"))
+)
+loadFont(
+  cache,
+  fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-Italic.ttf"))
+)
+loadFont(
+  cache,
+  fs.readFileSync(path.join(__dirname, "../Arimo/Arimo-BoldItalic.ttf"))
+)
 addFontFallback(cache, "Arimo", "'Helvetica', 'Arial', sans-serif")
 
 it("Renders a line of text", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 100 }}>
       <Text style={{ fontFamily: "Arimo" }}>Hello world</Text>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders multiple lines of text", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 100 }}>
       <Text style={{ fontFamily: "Arimo" }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eleifend congue faucibus. In
-        {" "}eget tortor in odio luctus eleifend. Nullam pretium justo nisi, nec volutpat turpis
-        {" "}tempor et.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eleifend
+        congue faucibus. In eget tortor in odio luctus eleifend. Nullam pretium
+        justo nisi, nec volutpat turpis tempor et.
       </Text>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders text with forced break", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 100 }}>
       <Text style={{ fontFamily: "Arimo" }}>Hello{"\n"}world</Text>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders multiple lines of text with multiple styles", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 100 }}>
       <Text style={{ fontFamily: "Arimo" }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        {" "}<Text style={{ fontStyle: "italic" }}>Sed eleifend congue faucibus.</Text>
-        {" "}In eget tortor in odio luctus eleifend. Nullam pretium justo nisi, nec volutpat turpis tempor et.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
+        <Text style={{ fontStyle: "italic" }}>
+          Sed eleifend congue faucibus.
+        </Text>{" "}
+        In eget tortor in odio luctus eleifend. Nullam pretium justo nisi, nec
+        volutpat turpis tempor et.
       </Text>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders multiple lines of text with text align", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 100 }}>
       <View>
         <Text style={{ fontFamily: "Arimo", textAlign: "left" }}>
@@ -82,13 +101,14 @@ it("Renders multiple lines of text with text align", () => {
         </Text>
       </View>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders text with different sizes", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 500 }}>
       <View>
         <Text style={{ fontFamily: "Arimo", fontSize: 16, lineHeight: 32 }}>
@@ -96,13 +116,14 @@ it("Renders text with different sizes", () => {
         </Text>
       </View>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)
 })
 
 it("Renders text with different colors", () => {
-  const jsx =
+  const jsx = (
     <View style={{ width: 500 }}>
       <View>
         <Text style={{ fontFamily: "Arimo" }}>
@@ -110,6 +131,7 @@ it("Renders text with different colors", () => {
         </Text>
       </View>
     </View>
+  )
 
   const component = renderer.create(jsx).toJSON()
   expect(component).toMatchSVGSnapshot(320, 480)

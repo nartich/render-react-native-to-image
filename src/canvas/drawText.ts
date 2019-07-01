@@ -1,7 +1,7 @@
+import { FontCache } from "../layout/"
 import { TextWithAttributedStyle } from "../layout/extract-text"
 import { fontWithFallbacks } from "../layout/font-utils"
 import { lineBaseline, lineFontSize, lineHeight } from "../layout/text-layout"
-import { FontCache } from '../layout/'
 
 const textStyles = (fontState: FontCache, style) => ({
   "font-family": fontWithFallbacks(fontState, style.fontFamily),
@@ -22,63 +22,74 @@ const textAnchors = {
   right: "end",
 }
 
-export default (ctx, fontState: FontCache, {left, top, width, height}, style: any, lines: TextWithAttributedStyle[]): void => {
-  if (!lines.length) return;
+export default (
+  ctx,
+  fontState: FontCache,
+  { left, top, width, height },
+  style: any,
+  lines: TextWithAttributedStyle[]
+): void => {
+  if (!lines.length) {
+    return
+  }
   const { textAlign = "left" as string } = lines[0].attributedStyles[0].style
   // TODO
   const originX = width * textAligns[textAlign]
 
   // TODO center text?
 
-  let y = top;
-  lines.forEach(line => {
+  let y = top
+  lines.forEach((line) => {
     const { text, attributedStyles } = line
-    const originY = y + lineBaseline(fontState, line) + (lineHeight(line) - lineFontSize(line)) / 2
+    const originY =
+      y +
+      lineBaseline(fontState, line) +
+      (lineHeight(line) - lineFontSize(line)) / 2
     let x = left + originX
 
-    if (textAlign !== 'left') {
-      const width = attributedStyles.reduce((total, {start, end, style}) => {
-        const fontFamily = fontWithFallbacks(fontState, style);
+    if (textAlign !== "left") {
+      const width = attributedStyles.reduce((total, { start, end, style }) => {
+        const fontFamily = fontWithFallbacks(fontState, style)
         // const fontWeight = style.fontWeight || 'normal';
         // const fontStyle = style.fontStyle || 'normal';
-        const fontSize = style.fontSize || 12; /** TODO have a default? */
+        const fontSize = style.fontSize || 12 /** TODO have a default? */
         // console.log(style)
 
-        ctx.fillStyle = style.color;
+        ctx.fillStyle = style.color
         // TODO bold
         let font = `${style.fontSize}px ${fontFamily}`
-        if (style.fontWeight !== 'normal') {
+        if (style.fontWeight !== "normal") {
           font = `${style.fontWeight} ${font}`
         }
-        if (style.fontStyle !== 'normal') {
+        if (style.fontStyle !== "normal") {
           font = `${style.fontStyle} ${font}`
         }
         ctx.font = font
 
         return total + ctx.measureText(text.slice(start, end)).width
-      }, 0);
-      if (textAlign == 'center') {
+      }, 0)
+      if (textAlign == "center") {
         x -= width / 2
-      } else if (textAlign == 'right') {
+      } else if (textAlign == "right") {
         x -= width
       }
     }
 
     attributedStyles.forEach(({ start, end, style }, i) => {
-      const fill = style.color;
-      const fontFamily = fontWithFallbacks(fontState, style.fontFamily);
+      const fill = style.color
+      const fontFamily = fontWithFallbacks(fontState, style.fontFamily)
       // const fontWeight = style.fontWeight || 'normal';
       // const fontStyle = style.fontStyle || 'normal';
-      const fontSize = style.fontSize || 12; /** TODO have a default? */
+      const fontSize = style.fontSize || 12 /** TODO have a default? */
       // console.log(style)
 
-      ctx.fillStyle = fill;
+      ctx.fillStyle = fill
       // TODO bold
       let font = `${style.fontSize}px ${fontFamily}`
-      if (style.fontWeight !== 'normal') {
+      if (style.fontWeight !== "normal") {
         font = `${style.fontWeight} ${font}`
       }
-      if (style.fontStyle !== 'normal') {
+      if (style.fontStyle !== "normal") {
         font = `${style.fontStyle} ${font}`
       }
       // console.log('font here', text.slice(start,end), font)
@@ -93,7 +104,7 @@ export default (ctx, fontState: FontCache, {left, top, width, height}, style: an
       // )
     })
     y += lineHeight(line)
-  });
+  })
 
   // const { textLines } = lines.reduce((accum, line) => {
   //   const { text, attributedStyles } = line

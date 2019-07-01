@@ -1,19 +1,25 @@
 import * as yoga from "yoga-layout"
 import { RenderedComponent, Settings } from "../layout"
-import nodeToSVG, {getOpacity} from "./node-to-svg"
-import {styleFromComponent} from "../layout/component-to-node"
+import nodeToSVG, { getOpacity } from "./node-to-svg"
+import { styleFromComponent } from "../layout/component-to-node"
 import wsp from "./whitespace"
-import { FontCache } from '../layout'
+import { FontCache } from "../layout"
 
-export const recurseTree =
-  (indent: number, root: RenderedComponent, settings: Settings) => {
+export const recurseTree = (
+  indent: number,
+  root: RenderedComponent,
+  settings: Settings
+) => {
+  const nodeString = nodeToSVG(indent, root, settings)
 
-    const nodeString = nodeToSVG(indent, root, settings)
+  const childrenCount = root.children.length
+  if (!childrenCount) {
+    return nodeString
+  }
 
-    const childrenCount = root.children.length
-    if (!childrenCount) { return nodeString }
-
-    return nodeString + groupWrap(root, indent, () => {
+  return (
+    nodeString +
+    groupWrap(root, indent, () => {
       let childGroups = ""
 
       for (let index = 0; index < childrenCount; index++) {
@@ -26,25 +32,42 @@ export const recurseTree =
 
       return childGroups
     })
-  }
+  )
+}
 
-export const svgWrapper = (bodyText: string, root: RenderedComponent, settings: Settings) =>
+export const svgWrapper = (
+  bodyText: string,
+  root: RenderedComponent,
+  settings: Settings
+) =>
   `<?xml version="1.0" encoding="UTF-8" ?>
-<svg width="${root.layout.width}" height="${root.layout.height}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-${settings.backgroundColor ? `<rect width="${root.layout.width}" height="${root.layout.width}" fill="${settings.backgroundColor}" />` : ''}
+<svg width="${root.layout.width}" height="${
+    root.layout.height
+  }" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+${
+  settings.backgroundColor
+    ? `<rect width="${root.layout.width}" height="${root.layout.width}" fill="${settings.backgroundColor}" />`
+    : ""
+}
 ${bodyText}
 </svg>
 `
 
-const opacityProp = node => {
-  const opacity = getOpacity(node);
-  if (opacity === 1) return ''
+const opacityProp = (node) => {
+  const opacity = getOpacity(node)
+  if (opacity === 1) return ""
   return ` opacity='${opacity}'`
 }
 
-export const groupWrap = (node: RenderedComponent, indent: number, recurse: () => string) => `
+export const groupWrap = (
+  node: RenderedComponent,
+  indent: number,
+  recurse: () => string
+) => `
 
-${wsp(indent)}<g transform='translate(${node.layout.left}, ${node.layout.top})'${opacityProp(node)}>${recurse()}
+${wsp(indent)}<g transform='translate(${node.layout.left}, ${
+  node.layout.top
+})'${opacityProp(node)}>${recurse()}
 ${wsp(indent)}</g>
 `
 

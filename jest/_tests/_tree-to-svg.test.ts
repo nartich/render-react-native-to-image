@@ -1,7 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import treeToSVG from "../svg/tree-to-svg"
-import {fontState} from '../font-loader'
+import { fontState } from "../font-loader"
 
 describe("treeToSVG", () => {
   it("wraps whatever text you pass into it with an SVG schema", () => {
@@ -16,8 +16,8 @@ describe("treeToSVG", () => {
         top: 80,
         bottom: 100,
         width: 200,
-        height: 200
-      }
+        height: 200,
+      },
     }
 
     const settings = {

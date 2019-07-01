@@ -1,9 +1,12 @@
 import * as LineBreaker from "linebreak"
 import { AttributedStyle, TextWithAttributedStyle } from "./extract-text"
 import { fontForStyle } from "./font-utils"
-import { FontCache } from './'
+import { FontCache } from "./"
 
-export const lineWidth = (fontState: FontCache, { text, attributedStyles }: TextWithAttributedStyle): number =>
+export const lineWidth = (
+  fontState: FontCache,
+  { text, attributedStyles }: TextWithAttributedStyle
+): number =>
   attributedStyles.reduce((x, { start, end, style }, i) => {
     let body = text.slice(start, end)
     // Trim trailling whitespace
@@ -11,28 +14,35 @@ export const lineWidth = (fontState: FontCache, { text, attributedStyles }: Text
       body = body.replace(/\s+$/, "")
     }
     const font = fontForStyle(fontState, style)
-    return x + font.layout(body).advanceWidth / font.unitsPerEm * style.fontSize
+    return (
+      x + (font.layout(body).advanceWidth / font.unitsPerEm) * style.fontSize
+    )
   }, 0)
 
 export const lineHeight = (line: TextWithAttributedStyle): number =>
-  Math.max(
-    0,
-    ...line.attributedStyles.map(({ style }) => style.lineHeight)
-  )
+  Math.max(0, ...line.attributedStyles.map(({ style }) => style.lineHeight))
 
 export const lineFontSize = (line: TextWithAttributedStyle): number =>
-  Math.max(
-    0,
-    ...line.attributedStyles.map(({ style }) => style.fontSize)
-  )
+  Math.max(0, ...line.attributedStyles.map(({ style }) => style.fontSize))
 
-const baselineForAttributedStyle = (fontState: FontCache, { style }: AttributedStyle): number => {
+const baselineForAttributedStyle = (
+  fontState: FontCache,
+  { style }: AttributedStyle
+): number => {
   const font = fontForStyle(fontState, style)
-  return font.ascent / font.unitsPerEm * style.fontSize
+  return (font.ascent / font.unitsPerEm) * style.fontSize
 }
 
-export const lineBaseline = (fontState: FontCache, line: TextWithAttributedStyle): number =>
-  Math.max(0, ...line.attributedStyles.map(x => baselineForAttributedStyle(fontState, x)))
+export const lineBaseline = (
+  fontState: FontCache,
+  line: TextWithAttributedStyle
+): number =>
+  Math.max(
+    0,
+    ...line.attributedStyles.map((x) =>
+      baselineForAttributedStyle(fontState, x)
+    )
+  )
 
 const textSlice = (
   textStyle: TextWithAttributedStyle,
@@ -41,12 +51,12 @@ const textSlice = (
 ): TextWithAttributedStyle => ({
   text: textStyle.text.slice(start, end),
   attributedStyles: textStyle.attributedStyles
-    .filter(a => a.end > start && a.start < end)
-    .map(a => ({
+    .filter((a) => a.end > start && a.start < end)
+    .map((a) => ({
       start: Math.max(a.start - start, 0),
       end: Math.min(a.end - start, end - start),
       style: a.style,
-    }))
+    })),
 })
 
 export const breakLines = (
@@ -67,7 +77,10 @@ export const breakLines = (
   while (bk != null) {
     const { position, required } = bk
     const testLine = textSlice(textStyle, lineStart, position)
-    if (lastLine === null || (!shouldBreak && lineWidth(fontState, testLine) <= width)) {
+    if (
+      lastLine === null ||
+      (!shouldBreak && lineWidth(fontState, testLine) <= width)
+    ) {
       lastLine = testLine
     } else {
       lines.push(lastLine)
@@ -87,6 +100,6 @@ export const breakLines = (
 }
 
 export const measureLines = (fontState, lines) => ({
-  width: Math.max(0, ...lines.map(x => lineWidth(fontState, x))),
+  width: Math.max(0, ...lines.map((x) => lineWidth(fontState, x))),
   height: lines.reduce((a, b) => a + lineHeight(b), 0),
 })

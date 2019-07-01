@@ -7,26 +7,37 @@ enum Side {
   Top,
   Right,
   Bottom,
-  Left
+  Left,
 }
 
 // Done in CSS order
 export type Sides<T> = [T, T, T, T]
 
-const applySides = <T>(sides: Sides<T>, value: T | null | undefined, side: Side): Sides<T> => {
+const applySides = <T>(
+  sides: Sides<T>,
+  value: T | null | undefined,
+  side: Side
+): Sides<T> => {
   if (value == null) {
     return sides
   }
 
   const [top, right, bottom, left] = sides
   switch (side) {
-    case Side.All: return [value, value, value, value]
-    case Side.Vertical: return [value, right, value, left]
-    case Side.Horizontal: return [top, value, bottom, value]
-    case Side.Top: return [value, right, bottom, left]
-    case Side.Right: return [top, value, bottom, left]
-    case Side.Bottom: return [top, right, value, left]
-    case Side.Left: return [top, right, bottom, value]
+    case Side.All:
+      return [value, value, value, value]
+    case Side.Vertical:
+      return [value, right, value, left]
+    case Side.Horizontal:
+      return [top, value, bottom, value]
+    case Side.Top:
+      return [value, right, bottom, left]
+    case Side.Right:
+      return [top, value, bottom, left]
+    case Side.Bottom:
+      return [top, right, value, left]
+    case Side.Left:
+      return [top, right, bottom, value]
   }
 }
 
@@ -61,7 +72,11 @@ export const getBorderRadius = (style: any): Sides<number> => {
   return sides
 }
 
-export const getScaledBorderRadius = (style: any, width: number, height: number): Sides<number> => {
+export const getScaledBorderRadius = (
+  style: any,
+  width: number,
+  height: number
+): Sides<number> => {
   let borderRadii = getBorderRadius(style)
 
   const borderScale = Math.max(
@@ -80,14 +95,24 @@ export const getScaledBorderRadius = (style: any, width: number, height: number)
 }
 
 export const sidesEqual = <T>(sides: Sides<T>): boolean =>
-  sides[0] === sides[1] &&
-  sides[0] === sides[2] &&
-  sides[0] === sides[3]
+  sides[0] === sides[1] && sides[0] === sides[2] && sides[0] === sides[3]
 
-export const scaleSides = (sides: Sides<number>, scale: number): Sides<number> =>
-  [sides[0] * scale, sides[1] * scale, sides[2] * scale, sides[3] * scale]
+export const scaleSides = (
+  sides: Sides<number>,
+  scale: number
+): Sides<number> => [
+  sides[0] * scale,
+  sides[1] * scale,
+  sides[2] * scale,
+  sides[3] * scale,
+]
 
-interface Corner { rx: number, ry: number, x: number, y: number }
+interface Corner {
+  rx: number
+  ry: number
+  x: number
+  y: number
+}
 
 const cornerEllipseAtSide = (
   x: number,
@@ -96,7 +121,7 @@ const cornerEllipseAtSide = (
   height: number,
   radii: Sides<number>,
   insets: Sides<number>,
-  side: number,
+  side: number
 ): Corner => {
   const radius = radii[side]
   const insetBefore = insets[(side + 3) % 4]
@@ -109,11 +134,11 @@ const cornerEllipseAtSide = (
   }
 }
 
-const to6Dp = x => Math.round(x * 1E6) / 1E6
+const to6Dp = (x) => Math.round(x * 1e6) / 1e6
 
 const positionOnCorner = (angle: number, corner: Corner) => ({
   x: to6Dp(corner.x + corner.rx * Math.cos(angle)),
-  y: to6Dp(corner.y + corner.ry * Math.sin(angle))
+  y: to6Dp(corner.y + corner.ry * Math.sin(angle)),
 })
 
 const drawSide = (
@@ -130,10 +155,10 @@ const drawSide = (
     anticlockwise = false,
     moveCommand = "",
   }: {
-    startCompletion?: number,
-    endCompletion?: number,
-    moveCommand?: "M" | "L" | "",
-    anticlockwise?: boolean,
+    startCompletion?: number
+    endCompletion?: number
+    moveCommand?: "M" | "L" | ""
+    anticlockwise?: boolean
   } = {}
 ) => {
   const baseAngle = (side + 3) * (Math.PI / 2)
@@ -141,10 +166,18 @@ const drawSide = (
   const startSide = anticlockwise ? (side + 1) % 4 : side
   const endSide = anticlockwise ? side : (side + 1) % 4
   const sweep = anticlockwise ? 0 : 1
-  const completionFactor = Math.PI / 2 * (anticlockwise ? -1 : 1)
+  const completionFactor = (Math.PI / 2) * (anticlockwise ? -1 : 1)
 
   let path = ""
-  const startCorner = cornerEllipseAtSide(x, y, width, height, radii, insets, startSide)
+  const startCorner = cornerEllipseAtSide(
+    x,
+    y,
+    width,
+    height,
+    radii,
+    insets,
+    startSide
+  )
 
   if (moveCommand !== "") {
     const moveAngle = baseAngle - startCompletion * completionFactor
@@ -157,7 +190,15 @@ const drawSide = (
     path += `A${startCorner.rx},${startCorner.ry} 0 0,${sweep} ${start.x},${start.y}`
   }
 
-  const endCorner = cornerEllipseAtSide(x, y, width, height, radii, insets, endSide)
+  const endCorner = cornerEllipseAtSide(
+    x,
+    y,
+    width,
+    height,
+    radii,
+    insets,
+    endSide
+  )
   const mid = positionOnCorner(baseAngle, endCorner)
   path += `L${mid.x},${mid.y}`
 
@@ -170,35 +211,58 @@ const drawSide = (
   return path
 }
 
-export const pathForRect = ({left: x, top: y, width, height}, radii, insets, anticlockwise: boolean = false) => {
+export const pathForRect = (
+  { left: x, top: y, width, height },
+  radii,
+  insets,
+  anticlockwise: boolean = false
+) => {
   const sideIndices = [0, 1, 2, 3]
 
   if (anticlockwise) {
     sideIndices.reverse()
   }
 
-  const sides = sideIndices.map((side, index) => (
+  const sides = sideIndices.map((side, index) =>
     drawSide(x, y, width, height, radii, insets, side, {
       startCompletion: 0,
       endCompletion: 1,
       moveCommand: index === 0 ? "M" : "",
       anticlockwise,
     })
-  ))
+  )
   return sides.join("") + "Z"
 }
 
-export const filledPathForSide = ({left: x, top: y, width, height}, radii, insets, side) => (
-  drawSide(x, y, width, height, radii, [0, 0, 0, 0], side, { moveCommand: "M" }) +
-  drawSide(x, y, width, height, radii, insets, side, { moveCommand: "L", anticlockwise: true }) +
+export const filledPathForSide = (
+  { left: x, top: y, width, height },
+  radii,
+  insets,
+  side
+) =>
+  drawSide(x, y, width, height, radii, [0, 0, 0, 0], side, {
+    moveCommand: "M",
+  }) +
+  drawSide(x, y, width, height, radii, insets, side, {
+    moveCommand: "L",
+    anticlockwise: true,
+  }) +
   "Z"
-)
 
-export const strokedPathForSide = ({left: x, top: y, width, height}, radii, insets, side) => (
-  drawSide(x, y, width, height, radii, scaleSides(insets, 0.5), side, { moveCommand: "M" })
-)
+export const strokedPathForSide = (
+  { left: x, top: y, width, height },
+  radii,
+  insets,
+  side
+) =>
+  drawSide(x, y, width, height, radii, scaleSides(insets, 0.5), side, {
+    moveCommand: "M",
+  })
 
 export const dashStyles = {
-  dotted: width => ({ "stroke-linecap": "round", "stroke-dasharray": `0, ${width * 1.5}`}),
-  dashed: width => ({ "stroke-dasharray": `${width * 2}, ${width}`}),
+  dotted: (width) => ({
+    "stroke-linecap": "round",
+    "stroke-dasharray": `0, ${width * 1.5}`,
+  }),
+  dashed: (width) => ({ "stroke-dasharray": `${width * 2}, ${width}` }),
 }

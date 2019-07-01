@@ -1,7 +1,7 @@
 import * as yoga from "yoga-layout"
 
 import componentToNode, { styleFromComponent } from "../component-to-node"
-import {fontState} from '../font-loader'
+import { fontState } from "../font-loader"
 
 describe("componentToNode", () => {
   it("generates the width for a simple component", () => {
@@ -10,15 +10,15 @@ describe("componentToNode", () => {
       props: {
         style: {
           width: 300,
-          height: 40
-        }
+          height: 40,
+        },
       },
-      children: null
+      children: null,
     }
 
     const settings = {
       width: 1024,
-      height: 768
+      height: 768,
     }
 
     const node = componentToNode("", fontState, component, settings, null)
@@ -31,7 +31,7 @@ describe("componentToNode", () => {
   })
 })
 
-const componentWithStyle = (style: any) => ({ kind: "Stub", props: {style}})
+const componentWithStyle = (style: any) => ({ kind: "Stub", props: { style } })
 
 describe("styleFromComponent", () => {
   it("handles deeply nested arrays of styles", () => {
@@ -41,7 +41,7 @@ describe("styleFromComponent", () => {
         color: "black",
         textAlign: "left",
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
       },
       [
         {
@@ -50,11 +50,11 @@ describe("styleFromComponent", () => {
           lineHeight: 32,
           width: 280,
           marginTop: 35,
-          alignSelf: "center"
+          alignSelf: "center",
         },
-        null
+        null,
       ],
-      { fontFamily: "AGaramondPro-Regular" }
+      { fontFamily: "AGaramondPro-Regular" },
     ]
     const component = componentWithStyle(style)
     expect(styleFromComponent).toMatchSnapshot()

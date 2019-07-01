@@ -3,7 +3,6 @@
 //
 
 declare module "yoga-layout" {
-
   // https://github.com/facebook/yoga/blob/master/javascript/sources/YGEnums.js
   // and https://github.com/facebook/yoga/blob/master/gentest/gentest-javascript.js 5
 
@@ -192,7 +191,14 @@ declare module "yoga-layout" {
     width: number
     height: number
 
-    constructor(left: number, right: number, top: number, bottom: number, width: number, height: number)
+    constructor(
+      left: number,
+      right: number,
+      top: number,
+      bottom: number,
+      width: number,
+      height: number
+    )
     fromJS(expose: () => void)
     toString(): string
   }
@@ -224,7 +230,6 @@ declare module "yoga-layout" {
   }
 
   interface NodeInstance {
-
     setWidth(width: number)
     setHeight(height: number)
     setMinWidth(width: number)
@@ -248,7 +253,7 @@ declare module "yoga-layout" {
     setAlignItems(alignment: number)
     setAlignSelf(alignment: number)
 
-    setMeasureFunc(func: (width: number) => { width: number, height: number })
+    setMeasureFunc(func: (width: number) => { width: number; height: number })
 
     insertChild(node: NodeInstance, index: number)
     removeChild(node: NodeInstance)
@@ -283,7 +288,7 @@ declare module "yoga-layout" {
   function getInstanceCount(): number
 }
 
-declare module "font-manager" {
+declare module "fontmanager-redux" {
   function findFontSync(style: any): { path: string } | null
 }
 

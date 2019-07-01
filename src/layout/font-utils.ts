@@ -1,19 +1,22 @@
-import * as fontManager from "font-manager"
+import * as fontManager from "fontmanager-redux"
 import * as fontkit from "fontkit"
 import * as fs from "fs"
-import {FontCache} from './'
+import { FontCache } from "./"
 
 const weights = {
   normal: "400",
-  bold: "700"
+  bold: "700",
 }
 
-const numberWeight = weight => weights[weight] || weight
+const numberWeight = (weight) => weights[weight] || weight
 
 const keyFor = ({ fontFamily, fontWeight, fontStyle }) =>
   `${fontFamily} (weight: ${numberWeight(fontWeight)} style: ${fontStyle})`
 
-interface NameMatch { match: string, value: string }
+interface NameMatch {
+  match: string
+  value: string
+}
 
 const weightNames = [
   { match: "thin", value: "100" },
@@ -41,15 +44,21 @@ const italicNames = [
   { match: "oblique", value: "italic" },
 ]
 
-const matchNames = (target: string, names: NameMatch[], defaultValue: string): string => {
-  const match = names.find(name => target.toLowerCase().includes(name.match))
+const matchNames = (
+  target: string,
+  names: NameMatch[],
+  defaultValue: string
+): string => {
+  const match = names.find((name) => target.toLowerCase().includes(name.match))
   return match ? match.value : defaultValue
 }
 
 const addFont = (fontState: FontCache, font, style) => {
   const fontFamily = style.fontFamily || font.familyName
-  const fontWeight = style.fontWeight || matchNames(font.subfamilyName, weightNames, "400")
-  const fontStyle = style.fontStyle || matchNames(font.subfamilyName, italicNames, "normal")
+  const fontWeight =
+    style.fontWeight || matchNames(font.subfamilyName, weightNames, "400")
+  const fontStyle =
+    style.fontStyle || matchNames(font.subfamilyName, italicNames, "normal")
   const key = keyFor({ fontFamily, fontWeight, fontStyle })
 
   if (!fontFamily || !fontWeight || !fontStyle) {
@@ -59,22 +68,33 @@ const addFont = (fontState: FontCache, font, style) => {
   fontState.fonts[key] = font
 }
 
-export const initFontCache = () => ({fonts: {}, fallbacks: {}});
+export const initFontCache = () => ({ fonts: {}, fallbacks: {} })
 
 export const loadFont = (
   fontState: FontCache,
   fontFile: Buffer,
-  style: { fontFamily?: string, fontWeight?: string, fontStyle?: string, postscriptName?: string } = {}
+  style: {
+    fontFamily?: string
+    fontWeight?: string
+    fontStyle?: string
+    postscriptName?: string
+  } = {}
 ) => {
   const font = fontkit.create(fontFile, style.postscriptName)
   if (font.fonts) {
-    font.fonts.forEach(f => addFont(fontState, f, { fontFamily: style.fontFamily }))
+    font.fonts.forEach((f) =>
+      addFont(fontState, f, { fontFamily: style.fontFamily })
+    )
   } else {
     addFont(fontState, font, style)
   }
 }
 
-export const addFontFallback = (fontState: FontCache, fontFamily: string, fallback: string) => {
+export const addFontFallback = (
+  fontState: FontCache,
+  fontFamily: string,
+  fallback: string
+) => {
   fontState.fallbacks[fontFamily] = fallback
 }
 
@@ -101,6 +121,10 @@ export const fontForStyle = (fontState: FontCache, style, force = false) => {
   return fontForStyle(fontState, style, true)
 }
 
-export const fontWithFallbacks = (fontState: FontCache, fontFamily: string): string => (
-  fontState.fallbacks[fontFamily] ? `'${fontFamily}', ${fontState.fallbacks[fontFamily]}` : `'${fontFamily}'`
-)
+export const fontWithFallbacks = (
+  fontState: FontCache,
+  fontFamily: string
+): string =>
+  fontState.fallbacks[fontFamily]
+    ? `'${fontFamily}', ${fontState.fallbacks[fontFamily]}`
+    : `'${fontFamily}'`
