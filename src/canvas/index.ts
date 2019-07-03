@@ -235,8 +235,12 @@ const renderToCanvas = async (
   root: RenderedComponent,
   settings: Settings
 ) => {
-  const canvas = createCanvas(root.layout.width, root.layout.height)
+  const sample = settings.superSample || 1;
+  const canvas = createCanvas(root.layout.width * sample, root.layout.height * sample);
   const ctx = canvas.getContext("2d")
+  if (sample != 1) {
+    ctx.scale(sample, sample);
+  }
   if (settings.backgroundColor) {
     ctx.fillStyle = settings.backgroundColor
     ctx.fillRect(0, 0, root.layout.width, root.layout.height)

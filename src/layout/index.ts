@@ -24,13 +24,14 @@ export interface RenderedComponent {
 }
 
 export interface Settings {
-  backgroundColor?: string
-  basePath: string
-  renderPath: string
-  fontCache: FontCache
-  assetMap: { [key: string]: string }
-  width: number
-  height: number
+    superSample?: number,
+    backgroundColor?: string
+    basePath: string
+    renderPath: string
+    fontCache: FontCache
+    assetMap: {[key: string]: string}
+    width: number
+    height: number
 }
 
 export default (root: renderer.ReactTestRendererJSON, settings: Settings) => {
