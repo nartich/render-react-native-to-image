@@ -21,6 +21,21 @@ exports[`Counting nodes it is good with memory 1`] = `
     }
   />
   <Image
+    height={50}
+    source={
+      Object {
+        "uri": "https://cdn.kastatic.org/images/badges/meteorite/ten-to-fourth-40x40.png",
+      }
+    }
+    style={
+      Object {
+        "height": 50,
+        "width": 50,
+      }
+    }
+    width={50}
+  />
+  <Image
     source={
       Object {
         "testUri": "src/__tests__/example.png",

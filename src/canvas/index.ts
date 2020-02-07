@@ -157,7 +157,7 @@ const renderers: {
       // node.props.resizeMode === "cover"
       const { top, left, width, height } = node.layout
       if (uri.match(/^https?:\/\//)) {
-        const img = new Image()
+        const img = new CanvasImage()
         img.src = await fetch(uri).then((response) => response.buffer())
         ctx.drawImage(img, left, top, width, height)
       } else {
@@ -235,11 +235,14 @@ const renderToCanvas = async (
   root: RenderedComponent,
   settings: Settings
 ) => {
-  const sample = settings.superSample || 1;
-  const canvas = createCanvas(root.layout.width * sample, root.layout.height * sample);
+  const sample = settings.superSample || 1
+  const canvas = createCanvas(
+    root.layout.width * sample,
+    root.layout.height * sample
+  )
   const ctx = canvas.getContext("2d")
   if (sample != 1) {
-    ctx.scale(sample, sample);
+    ctx.scale(sample, sample)
   }
   if (settings.backgroundColor) {
     ctx.fillStyle = settings.backgroundColor

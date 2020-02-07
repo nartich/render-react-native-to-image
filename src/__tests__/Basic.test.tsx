@@ -22,6 +22,14 @@ describe("Counting nodes", () => {
         }}
       >
         <Image source={require("./example.png")} />
+        <Image
+          source={{
+            uri:
+              "https://cdn.kastatic.org/images/badges/meteorite/ten-to-fourth-40x40.png",
+          }}
+          style={{ width: 50, height: 50 }}
+        />
+        {/* <Image source={{ uri: "https://google.com/favicon.ico" }} /> */}
         <Image source={require("./example.png")} style={{ tintColor: "red" }} />
         <Text>Hello folks</Text>
         <View
