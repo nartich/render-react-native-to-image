@@ -1,6 +1,6 @@
 {
   "name": "render-react-native-to-image",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generate an SVG or PNG image of a React Native Component Tree",
   "main": "build/index.js",
   "files": [
