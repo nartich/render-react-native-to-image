@@ -131,7 +131,9 @@ const tintedImage = async (imagePath, tintColor) => {
 
 const getImage = async (imagePath) => {
   const img = new CanvasImage()
-  img.src = await fs.promises.readFile(imagePath)
+  img.src = await new Promise((res, rej) =>
+    fs.readFile(imagePath, (err, val) => (err ? rej(err) : res(val)))
+  )
   return img
 }
 
