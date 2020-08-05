@@ -7,6 +7,7 @@ import { Image, Text, View } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import * as fs from "fs"
+import {ReactTestRendererJSON} from "react-test-renderer";
 
 describe("Counting nodes", () => {
   it("it is good with memory", async () => {
@@ -67,7 +68,7 @@ describe("Counting nodes", () => {
       </View>
     )
 
-    const component = renderer.create(jsx).toJSON()!
+    const component = renderer.create(jsx).toJSON()! as renderer.ReactTestRendererJSON
     expect(component).toMatchSnapshot()
     if (component == null) {
       return
