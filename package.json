@@ -49,7 +49,7 @@
     "preset": "react-native"
   },
   "dependencies": {
-    "canvas": "2.5.0",
+    "canvas": "2.6.1",
     "fontkit": "^1.8.0",
     "fontmanager-redux": "^0.3.2",
     "image-size": "^0.7.4",
